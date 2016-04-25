@@ -18,6 +18,7 @@ public class Bat extends JPanel{
 	public int pos;
 	public int velo;
 	public int move;
+	public boolean Stonewall = true;
 	public Bat (int x, int y, int length, int counter, int pos) {
 		this.x = x;
 		this.y = y;
@@ -40,19 +41,19 @@ public class Bat extends JPanel{
 			
 	}
 	
-	public void ballColl(Ball ball){
-		double 
-		if(ball.centre.x-7.5>=x&&ball.centre.x+7.5<=getSize().getWidth()){
-			if (){
-				ball.vy = - ball.vy+velo;
-				System.out.println("height");
-				ball.setLocation(ball.x, (int)getSize().getHeight());
-			} else if (ball.centre.y+7.5>=y&&ball.centre.y+7.5+10>=y+getSize().getHeight()){
-				ball.vy = - ball.vy+velo;
-				System.out.println("or not");
-				ball.setLocation(ball.x, y);
-			} else {}
-		}
+//	public void ballColl(Ball ball){
+//		double 
+//		if(ball.centre.x-7.5>=x&&ball.centre.x+7.5<=getSize().getWidth()){
+//			if (){
+//				ball.vy = - ball.vy+velo;
+//				System.out.println("height");
+//				ball.setLocation(ball.x, (int)getSize().getHeight());
+//			} else if (ball.centre.y+7.5>=y&&ball.centre.y+7.5+10>=y+getSize().getHeight()){
+//				ball.vy = - ball.vy+velo;
+//				System.out.println("or not");
+//				ball.setLocation(ball.x, y);
+//			} else {}
+//		}
 //		if(ball.centre.y-7.5>=y&&ball.centre.y+7.5<=getSize().getHeight()){
 //			if (ball.centre.x-7.5<=getSize().getWidth()){
 //				ball.vx = - ball.vx+velo;
@@ -62,9 +63,9 @@ public class Bat extends JPanel{
 //				ball.setLocation(x, ball.y);
 //			} else {}
 //		}
-		changeLength(250);
-	}
-	
+//		changeLength(250);
+//	}
+//	
 	public void addAction2(HashMap<String, Bat> pressedKeys) {
 		int i = pos;
 		String a = "UP";

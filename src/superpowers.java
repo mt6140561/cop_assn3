@@ -6,7 +6,7 @@ import java.awt.Point;
 import javax.swing.JLabel;
 
 
-public class Ball extends JLabel {
+public class superpowers extends JLabel {
 	public int x;
 	public int y;
 	public double vx;
@@ -14,23 +14,15 @@ public class Ball extends JLabel {
 	public Vector centre;
 	public double r = 7.5;
 	public boolean taken = false;
-	public Color color = Color.RED;
-	
-	public int randomselect(){
-		int vxx = (int)(Math.random()*3-Math.random()*3);
-		if(vxx==0){
-			vxx=randomselect();
-		}
-		return vxx;
-		
-	}
-	public Ball(int x, int y) {
+	public Color color;
+	public superpowers(int x, int y) {
 		this.x = x;
 		
 		this.y = y;
-		vx = randomselect();
-		vy = randomselect();
-		
+		vx = (int)(Math.random()*4)-2;
+		vy = (int)(Math.random()*4)-2;
+		if (vx==0){vx = 2;}
+		if (vy==0){vy = 2;}
 		centre = new Vector(x+r, y+r);
 		setLocation(x, y);
 		setSize(new Dimension(x+15, y+15));
