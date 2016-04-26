@@ -39,6 +39,7 @@ public class Contains extends JPanel implements ActionListener{
 		balls = new ArrayList<>();
 		setSize(600, 600);
 		setLayout(null);
+		setBackground(Color.BLACK);
 		players = i;
 //		Bat bat1 = new Bat(0, 0, 150, 3, 1);
 //		Bat bat2 = new Bat(0, 0, 150, 3, 2);
@@ -263,15 +264,15 @@ public class Contains extends JPanel implements ActionListener{
 			superspeedball.vy=0;
 			superspeedball.x=0;
 			superspeedball.y=0;
-			
-		}}
+			}
+		}
 		
 		
 		int bx = (int)superspeedball.getLocation().getX();
 		int by = (int)superspeedball.getLocation().getY();
 		int newbx = (int) (bx+superspeedball.vx);
 		int newby = (int) (by+superspeedball.vy);
-				superspeedball.setLocation(newbx, newby);
+		superspeedball.setLocation(newbx, newby);
 		
 		if (bats.get(1).x<superspeedball.x+7.5&& bats.get(1).x+bats.get(1).length>superspeedball.x+7.5 && superspeedball.y<bats.get(1).y){
 			bats.get(1).move=6;
@@ -327,8 +328,8 @@ public class Contains extends JPanel implements ActionListener{
 		
 		if (bats.get(1).x<extralifeball.x+7.5&& bats.get(1).x+bats.get(1).length>extralifeball.x+7.5 && extralifeball.y<bats.get(1).y){
 			
-			if(extralifeball.taken==false)
-			{extralifeball.taken=true;
+			if(extralifeball.taken==false){
+				extralifeball.taken=true;
 				bats.get(1).counter=bats.get(1).counter+1;
 			}
             extralifeball.setVisible(false);
@@ -337,9 +338,9 @@ public class Contains extends JPanel implements ActionListener{
 		}
 		
 		if (bats.get(3).x<extralifeball.x+7.5&& bats.get(3).x+bats.get(3).length>extralifeball.x+7.5 && extralifeball.y>bats.get(3).y){
-			if(extralifeball.taken==false)
-			{extralifeball.taken=true;
-			bats.get(3).counter=bats.get(3).counter+1;
+			if(extralifeball.taken==false){
+				extralifeball.taken=true;
+				bats.get(3).counter=bats.get(3).counter+1;
 			}
 			extralifeball.setVisible(false);
 		}
@@ -354,9 +355,9 @@ public class Contains extends JPanel implements ActionListener{
 		}
 		
 		if (bats.get(0).y<extralifeball.y+7.5&& bats.get(0).y+bats.get(0).length>extralifeball.y+7.5 && extralifeball.x<bats.get(0).x){
-			if(extralifeball.taken==false)
-			{extralifeball.taken=true;
-			bats.get(0).counter=bats.get(0).counter+1;
+			if(extralifeball.taken==false){
+				extralifeball.taken=true;
+				bats.get(0).counter=bats.get(0).counter+1;
 			}
 			extralifeball.setVisible(false);
 		}
@@ -381,11 +382,8 @@ public class Contains extends JPanel implements ActionListener{
 			stonewallball.vy=0;
 			stonewallball.x=0;
 			stonewallball.y=0;
-			
 			}
 		}
-		
-		
 		int bx = (int)stonewallball.getLocation().getX();
 		int by = (int)stonewallball.getLocation().getY();
 		int newbx = (int) (bx+stonewallball.vx);
@@ -428,7 +426,7 @@ public class Contains extends JPanel implements ActionListener{
 		Superspeed();
 		extralife();
 		Stonewall();
-		Color c= new Color(255, 215, 0);
+		Color c= Color.CYAN;
 		if(bats.get(0).Stonewall==true){
 			this.getGraphics().setColor(c);;
 			this.getGraphics().fillRect(0, 0, 2, 600);
@@ -464,6 +462,7 @@ public class Contains extends JPanel implements ActionListener{
 //				bats.get(o).ballColl(ball);
 //				
 //			}
+			System.out.println(ball.vx+", "+ball.vy+", "+ k);
 			double bx = ball.getLocation().getX();
 			double by = ball.getLocation().getY();
 			double newbx = bx+ball.vx;
@@ -584,13 +583,22 @@ public class Contains extends JPanel implements ActionListener{
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		int fontSize = 20;
-		g.setFont(new Font("TimesRoman", Font.PLAIN, fontSize));
+		g.setFont(new Font("", Font.PLAIN, fontSize));
 	    g.setColor(Color.red);
 	    g.drawString("lives left  = " + bats.get(1).counter, 250, 30);
 	    g.drawString("lives left  = " + bats.get(0).counter, 30, 300);
 	    g.drawString("lives left  = " + bats.get(3).counter, 250, 570);
 	    g.drawString("lives left  = " + bats.get(2).counter, 470,300);
 	    
+	}
+	
+	public double ceilroof(double a){
+		if (a<1&&a>0){
+			a = 1;
+		} else if (a<0&&a>-1){
+			a = -1;
+		}
+		return a;
 	}
 	
 	public void ballColl(){
@@ -620,10 +628,10 @@ public class Contains extends JPanel implements ActionListener{
 							double v1r = b2.vx*cos + b2.vy*sin;
 							double v1t = b1.vy*cos - b1.vx*sin;
 							double v2t = b2.vy*cos - b2.vx*sin;
-							b1.vx = (v1r*cos - v1t*sin);
-							b1.vy = (v1r*sin + v1t*cos);
-							b2.vx = (v2r*cos - v2t*sin);
-							b2.vy = (v2r*sin + v2t*cos);
+							b1.vx = ceilroof(v1r*cos - v1t*sin);
+							b1.vy = ceilroof(v1r*sin + v1t*cos);
+							b2.vx = ceilroof(v2r*cos - v2t*sin);
+							b2.vy = ceilroof(v2r*sin + v2t*cos);
 							System.out.println(b1.vx+", "+b1.vy+",/ "+((sin*sin)+(cos*cos))+",/ "+b2.vx+", "+b2.vy);
 						}
 					}

@@ -21,6 +21,7 @@ public class Ball extends JLabel {
 		if(vxx==0){
 			vxx=randomselect();
 		}
+		vxx=1;
 		return vxx;
 		
 	}
