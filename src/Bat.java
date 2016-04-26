@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.JComponent;
@@ -18,6 +19,10 @@ public class Bat extends JPanel{
 	public int pos;
 	public int velo;
 	public int move;
+
+	public HashMap<String, Bat> pressedKeys;
+	public ArrayList<Ball> balls;
+	public ArrayList<Bat> bats;
 	public boolean Stonewall = true;
 	public Bat (int x, int y, int length, int counter, int pos) {
 		this.x = x;
@@ -162,6 +167,337 @@ public class Bat extends JPanel{
 		return new Dimension(x, y);
 		
 	}
+	
+
+	public Ball nearestball(){
+		
+		
+		int[] abc= new int[balls.size()];
+		
+for(int k=0;k<balls.size();k++){
+	Ball ball=balls.get(k);
+	
+int t=20000;
+		int x=0;
+		if(pos==4){
+			
+					
+					int vx=(int)ball.vx;
+					int vy=(int)ball.vy;
+					if(vy>0){
+					int bx=ball.x;
+					int by=ball.y;
+					if(vy!=0){
+					 t=(600-by-10)/vy;
+					}
+					}
+				}
+		else{
+			if(pos==2){
+				int vx=(int)ball.vx;
+				int vy=(int)ball.vy;
+				if(vy<0){
+				int bx=ball.x;
+				int by=ball.y;
+				if(vy!=0){
+			    t=(10-by)/vy;
+				}
+				
+				}
+			}
+			else{
+				if(pos==3){
+					
+
+					int vx=(int)ball.vx;
+					int vy=(int)ball.vy;
+				if(vx>0){
+					
+					int bx=ball.x;
+					int by=ball.y;
+					if(vx!=0){
+					t=(600-bx-10)/vx;
+					x=by+t*vy;
+					}}
+					
+					
+					
+				}
+				
+				else{
+					if(pos==1){
+						int vx=(int)ball.vx;
+						int vy=(int)ball.vy;
+						if(vx<0){
+						int bx=ball.x;
+						int by=ball.y;
+						if(vx!=0){
+					    t=(10-bx)/vx;
+						}
+						
+						}
+					}
+					
+					
+					
+				}
+			}
+		}
+		
+		abc[k]=t;
+}
+
+int q= min(abc);
+	   return balls.get(q);
+	   
+   }
+     
+
+
+	
+			
+		
+public int min(int[] abc){
+	
+	int i=0;
+	int a=abc[0];
+	
+	
+	
+	for(int k=0; k<abc.length;k++){
+		
+		if(a>abc[k]){
+			a= abc[k];
+			i=k;
+		}
+		
+	}
+	return i;
+	
+	
+	
+}
+	
+	
+	
+		
+	public int findx(){
+		Ball ball= nearestball();
+		
+		int x=0;
+if(pos==4){
+	
+			
+			double vx=ball.vx;
+			 double vy=ball.vy;
+			int bx=ball.x;
+			int by=ball.y;
+			if(vy!=0){
+			int t=(int)((600-by-10)/vy);
+			x=(int)(bx+t*vx);
+			}
+		}
+else{
+	if(pos==2){
+		int vx=(int)ball.vx;
+		int vy=(int)ball.vy;
+		int bx=ball.x;
+		int by=ball.y;
+		if(vy!=0){
+		int t=by-10/vy;
+		x=bx-t*vx;
+		}
+	}
+	else{
+		if(pos==3){
+			
+
+			int vx=(int)ball.vx;
+			int vy=(int)ball.vy;
+			int bx=ball.x;
+			int by=ball.y;
+			if(vx!=0){
+			int t=(600-bx-10)/vx;
+			x=by+t*vy;
+			}
+			
+			
+			
+		}
+		else{
+			if(pos==1){
+				int vx=(int)ball.vx;
+				int vy=(int)ball.vy;
+				int bx=ball.x;
+				int by=ball.y;
+				if(vx!=0){
+				int t=(bx-10)/vx;
+				x=by-t*vy;
+				}
+					
+			}
+			
+			
+			
+		}
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+}
+return x;
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+	
+	public void toAI(){
+		
+		if(pos==4){
+			int a =bats.get(3).findx() ;
+			int dis = a - bats.get(3).x - ((bats.get(3).length)/2 );
+			System.out.println(a );
+			//if(a>bats.get(3).x + ((bats.get(3).length)/2) + 100 && a<bats.get(3).x + ((bats.get(3).length)/2)-100)
+			if(dis>-10 && dis<10)
+			{
+				pressedKeys.remove("pressed LEFT");
+				pressedKeys.remove("pressed RIGHT");
+			}
+			else
+			{
+			
+			if(a>bats.get(3).x + ((bats.get(3).length)/2)){
+				System.out.println("qwweqw");
+				pressedKeys.remove("pressed LEFT");
+				pressedKeys.put("pressed RIGHT",bats.get(3) );
+			}	
+			
+			else{
+				System.out.println("ssss");
+				pressedKeys.remove("pressed RIGHT");
+				pressedKeys.put("pressed LEFT",bats.get(3) );
+			}}
+		
+		}
+		else{
+			if(pos==2){
+				int a =bats.get(1).findx() ;
+				int dis = a - bats.get(1).x - ((bats.get(1).length)/2 );
+				System.out.println(a );
+				//if(a>bats.get(3).x + ((bats.get(3).length)/2) + 100 && a<bats.get(3).x + ((bats.get(3).length)/2)-100)
+				if(dis>-10 && dis<10)
+				{
+					pressedKeys.remove("pressed U");
+					pressedKeys.remove("pressed I");
+				}
+				else
+				{
+				
+				if(a>bats.get(1).x + ((bats.get(1).length)/2)){
+					System.out.println("qwweqw");
+					pressedKeys.remove("pressed U");
+					pressedKeys.put("pressed I",bats.get(1) );
+				}	
+				
+				else{
+					System.out.println("ssss");
+					pressedKeys.remove("pressed I");
+					pressedKeys.put("pressed U",bats.get(1) );
+				}}
+			
+				
+				
+				
+			}else{
+				if(pos==3){
+					int a =bats.get(2).findx() ;
+					int dis = a - bats.get(2).y - ((bats.get(2).length)/2 );
+					System.out.println(dis );
+					//if(a>bats.get(3).x + ((bats.get(3).length)/2) + 100 && a<bats.get(3).x + ((bats.get(3).length)/2)-100)
+					if(dis>-5 && dis<5)
+					{
+						pressedKeys.remove("pressed DOWN");
+						pressedKeys.remove("pressed UP");
+					}
+					else
+					{
+					
+					if(dis>0){
+						System.out.println("qwweqw");
+						pressedKeys.remove("pressed UP");
+						pressedKeys.put("pressed DOWN",bats.get(2) );
+					}	
+					
+					else{
+						System.out.println("ssss");
+						pressedKeys.remove("pressed DOWN");
+						pressedKeys.put("pressed UP",bats.get(2) );
+					}}	
+					
+					
+				}
+				else{
+					if(pos==1){
+						int a =bats.get(0).findx() ;
+						int dis = a - bats.get(0).y - ((bats.get(0).length)/2 );
+						System.out.println(a );
+						//if(a>bats.get(3).x + ((bats.get(3).length)/2) + 100 && a<bats.get(3).x + ((bats.get(3).length)/2)-100)
+						if(dis>-10 && dis<10)
+						{
+							pressedKeys.remove("pressed S");
+							pressedKeys.remove("pressed W");
+						}
+						else
+						{
+						
+						if(a>bats.get(0).y + ((bats.get(0).length)/2)){
+							System.out.println("qwweqw");
+							pressedKeys.remove("pressed W");
+							pressedKeys.put("pressed S",bats.get(0) );
+						}	
+						
+						else{
+							System.out.println("ssss");
+							pressedKeys.remove("pressed S");
+							pressedKeys.put("pressed W",bats.get(0) );
+						}}	
+						
+						
+						
+						
+					}
+					
+					
+					
+				}
+				
+				
+				
+				
+				
+			}
+			
+			
+			
+			
+			
+			
+		}
+		
+		
+	}
+	
+	
 	
 	public void addAI(Ball ball, HashMap<String, Bat> pressedKeys) {
 		int a1 = length/3;

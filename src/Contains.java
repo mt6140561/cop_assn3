@@ -54,12 +54,16 @@ public class Contains extends JPanel implements ActionListener{
 		addBat(2);
 		addBat(3);
 		addBat(4);
+		
 		tm = new Timer (15, this);
 		tm.start();
 //		System.out.println((new Vector(1,7)).distance(new Vector(4,3)));
 	}
 	
 	public void add(Bat bat){
+		bat.balls=balls;
+		bat.bats=bats;
+		bat.pressedKeys=pressedKeys;
 		bat.addAction2(pressedKeys);
 		bats.add(bat.pos-1, bat);
 		super.add(bat);
@@ -453,8 +457,10 @@ public class Contains extends JPanel implements ActionListener{
 		}
 		for(int k = 0; k<balls.size(); k++) {
 			Ball ball = balls.get(k);
-//			bats.get(0).addAI(ball, pressedKeys);
-//			bats.get(2).addAI(ball, pressedKeys);
+			bats.get(0).toAI();
+			bats.get(2).toAI();
+			bats.get(1).toAI();
+			bats.get(3).toAI();
 //			bats.get(1).addAI(ball, pressedKeys);
 //			bats.get(3).addAI(ball, pressedKeys);
 //			ballWall(ball);
