@@ -40,27 +40,56 @@ public class Contains extends JPanel implements ActionListener{
 		setSize(600, 600);
 		setLayout(null);
 		players = i;
-		Bat bat1 = new Bat(0, 0, 150, 3, 1);
-		Bat bat2 = new Bat(0, 0, 150, 3, 2);
-		Bat bat3 = new Bat(getWidth()-10, 0, 150, 3, 3);
-		Bat bat4 = new Bat(0, getHeight()-10, 150, 3, 4);
-		addBalls(1);
-		add(bat1);
-		add(bat2);
-		add(bat3);
-		add(bat4);
-		tm = new Timer (2, this);
+//		Bat bat1 = new Bat(0, 0, 150, 3, 1);
+//		Bat bat2 = new Bat(0, 0, 150, 3, 2);
+//		Bat bat3 = new Bat(getWidth()-10, 0, 150, 3, 3);
+//		Bat bat4 = new Bat(0, getHeight()-10, 150, 3, 4);
+		addBalls(3);
+//		add(bat1);
+//		add(bat2);
+//		add(bat3);
+//		add(bat4);
+		addBat(1);
+		addBat(2);
+		addBat(3);
+		addBat(4);
+		tm = new Timer (15, this);
 		tm.start();
-		System.out.println((new Vector(1,7)).distance(new Vector(4,3)));
+//		System.out.println((new Vector(1,7)).distance(new Vector(4,3)));
 	}
 	
 	public void add(Bat bat){
 		bat.addAction2(pressedKeys);
 		bats.add(bat.pos-1, bat);
-		System.out.println(bat.getSize().getWidth());
-//		System.out.println(isBetween(2,1,3));
 		super.add(bat);
 	}
+	
+	public void addBat(int i){
+		switch (i)
+		{
+		case 1:
+			Bat bat1 = new Bat(0, 0, 150, 3, 1);
+			add(bat1);
+			break;
+			
+		case 2:
+			Bat bat2 = new Bat(0, 0, 150, 3, 2);
+			add(bat2);
+			break;
+			
+		case 3:
+			Bat bat3 = new Bat(getWidth()-10, 0, 150, 3, 3);
+			add(bat3);
+			break;
+		
+		case 4:
+			Bat bat4 = new Bat(0, getHeight()-10, 150, 3, 4);
+			add(bat4);
+			break;
+		}
+	}
+	
+	
 		
 	public void add(Ball ball){
 		super.add(ball);
@@ -122,7 +151,6 @@ public class Contains extends JPanel implements ActionListener{
 			sball.r=100;
 			sball.color=Color.green;
 			this.superball = sball;
-//			System.out.println("qwe");
 			add(superball);
 			
 			
@@ -209,7 +237,7 @@ public class Contains extends JPanel implements ActionListener{
 			else{
 				if(bats.get(0).y+250>=600){
 					bats.get(0).changeLength(250);
-					System.out.println("hua");
+//					System.out.println("hua");
 				}else{
 					bats.get(0).changeLength(250);
 				}	
@@ -446,62 +474,77 @@ public class Contains extends JPanel implements ActionListener{
 				} else {
 					ball.setLocation((int)newbx, (int)by);
 					if (ball.vy<0){
-						bats.get(1).counter = bats.get(1).counter-1;
+						if (bats.get(1).Stonewall == false){
+							bats.get(1).counter = bats.get(1).counter-1;
+						}
 						bats.get(1).changeLength(150);
 						bats.get(1).Stonewall = false;
-						bats.get(1).move = 4;
+						bats.get(1).move = 8;
 //						System.out.println(bats.get(1).counter+" 1 ka");
 					} else {
-						bats.get(3).counter = bats.get(3).counter-1;
+						if (bats.get(3).Stonewall == false){
+							bats.get(3).counter = bats.get(3).counter-1;
+						}
+						
 						bats.get(3).changeLength(150);
 						bats.get(3).Stonewall = false;
-						bats.get(3).move = 4;
+						bats.get(3).move = 8;
 //						System.out.println(bats.get(3).counter+" 3 ka");
 					}
+					System.out.println(ball.vy+", "+k);
 					ball.vy = -ball.vy;
+					System.out.println(ball.vy+", "+k);
 				}
 			} else {
 				ball.setLocation((int)bx, (int)newby);
 				if (ball.vx<0){
-					bats.get(0).counter = bats.get(0).counter-1;
+					if (bats.get(0).Stonewall == false){	
+						bats.get(0).counter = bats.get(0).counter-1;
+					}
 					bats.get(0).changeLength(150);
 					bats.get(0).Stonewall = false;
-					bats.get(0).move = 4;
+					bats.get(0).move = 8;
 
 //					System.out.println(bats.get(0).counter+" 0 ka");
 				} else {
-					bats.get(2).counter = bats.get(2).counter-1;
+					if (bats.get(2).Stonewall == false){
+						bats.get(2).counter = bats.get(2).counter-1;
+					}
 					bats.get(2).changeLength(150);
 					bats.get(2).Stonewall = false;
-					bats.get(2).move = 4;
+					bats.get(2).move = 8;
 
 //					System.out.println(bats.get(2).counter+" 2 ka");
 				}
+				System.out.println(ball.vx+", "+k);
 				ball.vx = -ball.vx;
+				System.out.println(ball.vx+", "+k);
 			}
 			if ((isBetween(ball.centre.x, bats.get(1).x, bats.get(1).length)&&ball.centre.y<=bats.get(1).y+10+7.5)){
 				ball.vy = -ball.vy;
-				ball.vx = ball.vx+(bats.get(1).velo/4);
+				ball.vx = ball.vx+(bats.get(1).velo);
 				ball.setLocation(ball.x, bats.get(1).y+10);
 //				bats.get(1).changeLength(250);
 			} else if ((isBetween(ball.centre.x, bats.get(3).x, bats.get(3).length)&&ball.centre.y>=bats.get(3).y-7.5)){
 				ball.vy = -ball.vy;
-				ball.vx = ball.vx+(bats.get(3).velo/4);
+				ball.vx = ball.vx+(bats.get(3).velo);
 				ball.setLocation(ball.x, bats.get(3).y-15);
 //				bats.get(3).changeLength(250);
 			}
 			if ((isBetween(ball.centre.y, bats.get(0).y, bats.get(0).length)&&ball.centre.x<=bats.get(0).x+10+7.5)){
 				ball.vx = -ball.vx;
-				ball.vy = ball.vy-(bats.get(0).velo/4);
+//				System.out.println(ball.vy);
+				ball.vy = ball.vy-(bats.get(0).velo);
+//				System.out.println(ball.vy);
 				ball.setLocation(bats.get(0).x+10, ball.y);
 //				bats.get(0).changeLength(250);
 			} else if ((isBetween(ball.centre.y, bats.get(2).y, bats.get(2).length)&&ball.centre.x>=bats.get(2).x-7.5)){
 				ball.vx = -ball.vx;
-				ball.vy = ball.vy-(bats.get(2).velo/4);
+				ball.vy = ball.vy-(bats.get(2).velo);
 				ball.setLocation(bats.get(2).x-15, ball.y);
 //				bats.get(2).changeLength(250);
 			}
-			ballWall(ball);
+//			ballWall(ball);
 			
 		}
 		int dir = 0;
@@ -520,13 +563,13 @@ public class Contains extends JPanel implements ActionListener{
 			if (bat.pos == 1||bat.pos == 3){
 				if (bat.getLocation().getY()-dir>=0&&bat.getLocation().getY()-dir<=bat.getParent().getHeight()-bat.length){
 					bat.setLocation(bat.x, bat.y-dir);
-					bat.velo = dir/4;
+					bat.velo = dir/8;
 //					System.out.println(bat.velo);
 				} else {bat.velo = 0;}
 			} else {
 				if (bat.getLocation().getX()+dir>=0&&bat.getLocation().getX()+dir<=bat.getParent().getHeight()-bat.length){
 					bat.setLocation(bat.x+dir, bat.y);
-					bat.velo = dir;
+					bat.velo = dir/8;
 //					System.out.println(bat.velo);
 				} else {bat.velo = 0;}
 			}
@@ -541,12 +584,13 @@ public class Contains extends JPanel implements ActionListener{
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		int fontSize = 20;
-
-	    g.setFont(new Font("TimesRoman", Font.PLAIN, fontSize));
-	     
-	    g.setColor(Color.RED);
+		g.setFont(new Font("TimesRoman", Font.PLAIN, fontSize));
+	    g.setColor(Color.red);
+	    g.drawString("lives left  = " + bats.get(1).counter, 250, 30);
+	    g.drawString("lives left  = " + bats.get(0).counter, 30, 300);
+	    g.drawString("lives left  = " + bats.get(3).counter, 250, 570);
+	    g.drawString("lives left  = " + bats.get(2).counter, 470,300);
 	    
-	    g.drawString(bats.get(0).counter+"", 100, 200);
 	}
 	
 	public void ballColl(){
@@ -558,24 +602,30 @@ public class Contains extends JPanel implements ActionListener{
 					Vector c1c2 = new Vector(b2.centre.x - b1.centre.x, b2.centre.y - b1.centre.y);
 					
 					if (c1c2.mod()<=15){
-						
-						double cos = (c1c2.dotProd(new Vector(1, 0)))/c1c2.mod();
-						double sin = (c1c2.dotProd(new Vector(0, 1)))/c1c2.mod();
-						System.out.println("15 != "+c1c2.mod());
-						System.out.println(b2.centre.x+", "+b2.centre.y);
-						b2.centre.x = b1.centre.x + 15*cos;
-						b2.centre.y = b1.centre.y + 15*sin;
-						System.out.println(b2.centre.x+", "+b2.centre.y);
-						b2.setLocation((int)(b2.centre.x-7.5), (int)(b2.centre.y-7.5));
-						double v2r = b1.vx*cos + b1.vy*sin;
-						double v1r = b2.vx*cos + b2.vy*sin;
-						double v1t = b1.vy*cos - b1.vx*sin;
-						double v2t = b2.vy*cos - b2.vx*sin;
-						b1.vx = (v1r*cos - v1t*sin);
-						b1.vy = (v1r*sin + v1t*cos);
-						b2.vx = (v2r*cos - v2t*sin);
-						b2.vy = (v2r*sin + v2t*cos);
-						System.out.println("Vector: "+c1c2.x+", "+c1c2.y+",/ "+((sin*sin)+(cos*cos))+",/ "+b1.vx+", "+b1.vy);
+						if (c1c2.mod()<1e-12){} 
+						else {
+							double cos = (c1c2.dotProd(new Vector(1, 0)))/c1c2.mod();
+	//						double sin = (c1c2.dotProd(new Vector(0, 1)))/c1c2.mod();
+							double sin = Math.sqrt(1-(cos*cos));
+							if (c1c2.y<0){
+								sin = -sin;
+							}
+//							System.out.println("15 != "+c1c2.mod());
+//							System.out.println(b2.centre.x+", "+b2.centre.y);
+							b2.centre.x = b1.centre.x + 15*cos;
+							b2.centre.y = b1.centre.y + 15*sin;
+//							System.out.println(b2.centre.x+", "+b2.centre.y);
+							b2.setLocation((int)(b2.centre.x-7.5), (int)(b2.centre.y-7.5));
+							double v2r = b1.vx*cos + b1.vy*sin;
+							double v1r = b2.vx*cos + b2.vy*sin;
+							double v1t = b1.vy*cos - b1.vx*sin;
+							double v2t = b2.vy*cos - b2.vx*sin;
+							b1.vx = (v1r*cos - v1t*sin);
+							b1.vy = (v1r*sin + v1t*cos);
+							b2.vx = (v2r*cos - v2t*sin);
+							b2.vy = (v2r*sin + v2t*cos);
+							System.out.println(b1.vx+", "+b1.vy+",/ "+((sin*sin)+(cos*cos))+",/ "+b2.vx+", "+b2.vy);
+						}
 					}
 				}
 			}

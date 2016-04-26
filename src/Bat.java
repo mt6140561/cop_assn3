@@ -26,7 +26,7 @@ public class Bat extends JPanel{
 		this.counter = counter;
 		this.pos = pos;
 		this.velo = 0;
-		this.move = 4;
+		this.move = 8;
 		this.setLocation(x, y);
 		int x1=-1,y1=-1;
 		if (pos == 1 || pos == 3) {
