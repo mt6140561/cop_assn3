@@ -110,6 +110,7 @@ public class Contains extends JPanel implements ActionListener{
 		frame.setContentPane(new Contains(4));
 		frame.setLayout(null);
 		frame.pack();
+//		frame.setResizable(false);
 		frame.setSize(600+frame.getInsets().right+frame.getInsets().left+1, 600+frame.getInsets().top+frame.getInsets().bottom+1);
 		frame.setVisible(true);
 	}
@@ -132,6 +133,7 @@ public class Contains extends JPanel implements ActionListener{
 //					System.out.println(bats.get(3).counter+" 3 ka");
 				}
 				ball.vy = -ball.vy;
+				ball.vy = ceilroof(ball.vy);
 			}
 		} else {
 			ball.setLocation((int)bx, (int)newby);
@@ -143,6 +145,7 @@ public class Contains extends JPanel implements ActionListener{
 //				System.out.println(bats.get(2).counter+" 2 ka");
 			}
 			ball.vx = -ball.vx;
+			ball.vx = ceilroof(ball.vx);
 		}
 	}
 	
