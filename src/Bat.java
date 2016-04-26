@@ -177,7 +177,7 @@ public class Bat extends JPanel{
 for(int k=0;k<balls.size();k++){
 	Ball ball=balls.get(k);
 	
-int t=20000;
+int t=20000000;
 		int x=0;
 		if(pos==4){
 			
@@ -194,13 +194,13 @@ int t=20000;
 				}
 		else{
 			if(pos==2){
-				int vx=(int)ball.vx;
-				int vy=(int)ball.vy;
+				//int vx=(int)ball.vx;
+				double vy=ball.vy;
 				if(vy<0){
-				int bx=ball.x;
+				//int bx=ball.x;
 				int by=ball.y;
 				if(vy!=0){
-			    t=(10-by)/vy;
+			    t=(int)((10-by)/vy);
 				}
 				
 				}
@@ -304,9 +304,12 @@ else{
 		int bx=ball.x;
 		int by=ball.y;
 		if(vy!=0){
-		int t=by-10/vy;
+		int t=(by-10)/vy;
 		x=bx-t*vx;
+		System.out.println(x);
 		}
+		
+		
 	}
 	else{
 		if(pos==3){

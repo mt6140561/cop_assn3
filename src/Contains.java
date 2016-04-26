@@ -457,10 +457,10 @@ public class Contains extends JPanel implements ActionListener{
 		}
 		for(int k = 0; k<balls.size(); k++) {
 			Ball ball = balls.get(k);
-			bats.get(0).toAI();
-			bats.get(2).toAI();
+		//	bats.get(0).toAI();
+			//bats.get(2).toAI();
 			bats.get(1).toAI();
-			bats.get(3).toAI();
+			//bats.get(3).toAI();
 //			bats.get(1).addAI(ball, pressedKeys);
 //			bats.get(3).addAI(ball, pressedKeys);
 //			ballWall(ball);
