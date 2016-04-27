@@ -451,9 +451,6 @@ public class Contains extends JPanel implements ActionListener{
 	}
 	
 	
-	
-	
-		
 	public boolean isBetween(double x, double start, double range){
 		return (x>=start&&x<=start+range);
 	}
@@ -582,24 +579,7 @@ public class Contains extends JPanel implements ActionListener{
 			}
 			
 
-//			if ((isBetween(ball.centre.x, bats.get(1).x, bats.get(1).length)&&ball.centre.y<=bats.get(1).y+10+7.5)){
-//				ball.vy = -ball.vy;
-//				ball.vx = ball.vx+(bats.get(1).velo);
-//				ball.setLocation(ball.x, bats.get(1).y+10);
-//			} else if ((isBetween(ball.centre.x, bats.get(3).x, bats.get(3).length)&&ball.centre.y>=bats.get(3).y-7.5)){
-//				ball.vy = -ball.vy;
-//				ball.vx = ball.vx+(bats.get(3).velo);
-//				ball.setLocation(ball.x, bats.get(3).y-15);
-//			}
-//			if ((isBetween(ball.centre.y, bats.get(0).y, bats.get(0).length)&&ball.centre.x<=bats.get(0).x+10+7.5)){
-//				ball.vx = -ball.vx;
-//				ball.vy = ball.vy-(bats.get(0).velo);
-//				ball.setLocation(bats.get(0).x+10, ball.y);
-//			} else if ((isBetween(ball.centre.y, bats.get(2).y, bats.get(2).length)&&ball.centre.x>=bats.get(2).x-7.5)){
-//				ball.vx = -ball.vx;
-//				ball.vy = ball.vy-(bats.get(2).velo);
-//				ball.setLocation(bats.get(2).x-15, ball.y);
-//			}
+
 			ballWall(ball);
 			
 		}
@@ -631,23 +611,23 @@ public class Contains extends JPanel implements ActionListener{
 		}
 		ballColl();
 		
-//		try {
-//			
-//			
-//			socket = new Socket("192.168.56.1", 9876);
-//			ObjectInputStream inin=new ObjectInputStream(socket.getInputStream());
-//			String message =  (String) inin.readObject();
-//			String[] info = message.split("\\s+");
-//			System.out.println("hello22");
-//			System.out.println(message);
-//			
-//			bats.get(0).setLocation(Integer.parseInt(info[0]), Integer.parseInt(info[1]));
-//			inin.close();
-//			
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		try {
+			
+			
+			socket = new Socket("192.168.56.1", 9876);
+			ObjectInputStream inin=new ObjectInputStream(socket.getInputStream());
+			String message =  (String) inin.readObject();
+			String[] info = message.split("\\s+");
+			System.out.println("hello22");
+			System.out.println(message);
+			
+			bats.get(0).setLocation(Integer.parseInt(info[0]), Integer.parseInt(info[1]));
+			inin.close();
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
