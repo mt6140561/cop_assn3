@@ -652,20 +652,20 @@ public class fourplayerserver extends JPanel implements ActionListener{
 	            ois.close();
 	          
         	 socket.close();
- 	    	socket=server2.accept();
-
-             ois = new ObjectInputStream(socket.getInputStream());
-        	 mess = (String) ois.readObject();
-        //	System.out.print("assa");
-        	
-        	 abcd = mess.split("\\s+");
-        	bats.get(1).setLocation(Integer.parseInt(abcd[0]), Integer.parseInt(abcd[1]));
-        	bats.get(1).velo=Integer.parseInt(abcd[2]);
-        	 
-	            ois.close();
-	          
-        	 socket.close();
+// 	    	socket=server2.accept();
 //
+//             ois = new ObjectInputStream(socket.getInputStream());
+//        	 mess = (String) ois.readObject();
+//        //	System.out.print("assa");
+//        	
+//        	 abcd = mess.split("\\s+");
+//        	bats.get(1).setLocation(Integer.parseInt(abcd[0]), Integer.parseInt(abcd[1]));
+//        	bats.get(1).velo=Integer.parseInt(abcd[2]);
+//        	 
+//	            ois.close();
+//	          
+//        	 socket.close();
+////
 //  	    	socket=server3.accept();
 //
 //            ois = new ObjectInputStream(socket.getInputStream());

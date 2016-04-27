@@ -16,8 +16,11 @@ public class serverexe {
 		st.f=true;
 		st.messageout="hey bitches";
 		st.start();
+<<<<<<< HEAD
 		
 		
+=======
+>>>>>>> e846ea06dd297c0a24027b96d966eb095591c475
 	}
 			
 }

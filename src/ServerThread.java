@@ -1,7 +1,11 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> 2669a0ae072a3e358a9060359cfde8afaec6c4e6
+=======
+
+>>>>>>> e846ea06dd297c0a24027b96d966eb095591c475
 import java.io.*;
 import java.net.*;
 
@@ -10,20 +14,29 @@ public class ServerThread extends Thread {
 	 public String messagein;
 	 public String messageout;
 <<<<<<< HEAD
+<<<<<<< HEAD
 	 public boolean f=false,completed=false;
 	 
 =======
 	 public boolean f=false;
 >>>>>>> 2669a0ae072a3e358a9060359cfde8afaec6c4e6
+=======
+	 public boolean f=false,completed=false;
+	 
+>>>>>>> e846ea06dd297c0a24027b96d966eb095591c475
 	    public ServerThread(Socket clientSocket) {
 	        this.socket = clientSocket;
 	    }
 	    
 	    public void run() {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	    	completed=false;
 =======
 >>>>>>> 2669a0ae072a3e358a9060359cfde8afaec6c4e6
+=======
+	    	completed=false;
+>>>>>>> e846ea06dd297c0a24027b96d966eb095591c475
 	        InputStream inp = null;
 	        DataInputStream brinp = null;
 	        DataOutputStream out = null;
@@ -58,6 +71,7 @@ public class ServerThread extends Thread {
 				//}
 		        try {
 <<<<<<< HEAD
+<<<<<<< HEAD
 		        	System.out.print(messageout);
 					out.writeUTF(messageout);
 				
@@ -66,6 +80,12 @@ public class ServerThread extends Thread {
 					out.writeUTF(messageout);
 				} 
 >>>>>>> 2669a0ae072a3e358a9060359cfde8afaec6c4e6
+=======
+		        	System.out.print(messageout);
+					out.writeUTF(messageout);
+				
+		        } 
+>>>>>>> e846ea06dd297c0a24027b96d966eb095591c475
 		        catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -95,16 +115,26 @@ public class ServerThread extends Thread {
 	                System.out.println("Socket Close Error");
 	            }
 <<<<<<< HEAD
+<<<<<<< HEAD
 	            completed=true;
 =======
 >>>>>>> 2669a0ae072a3e358a9060359cfde8afaec6c4e6
+=======
+	            completed=true;
+>>>>>>> e846ea06dd297c0a24027b96d966eb095591c475
 	            }
 	        
 	        
 	    }
+<<<<<<< HEAD
 <<<<<<< HEAD
 	    
 
 
 =======
 >>>>>>> 2669a0ae072a3e358a9060359cfde8afaec6c4e6
+=======
+	    
+
+
+>>>>>>> e846ea06dd297c0a24027b96d966eb095591c475
