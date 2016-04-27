@@ -23,7 +23,7 @@ import javax.swing.Timer;
 
 
 
-public class Contains extends JPanel implements ActionListener{
+public class twoplayerclient extends JPanel implements ActionListener{
 	
 	public HashMap<String, Bat> pressedKeys;
 	public ArrayList<Ball> balls;
@@ -38,21 +38,23 @@ public class Contains extends JPanel implements ActionListener{
 	/**
 	 * Create the panel.
 	 */
-	public Contains(int i) {
+	public twoplayerclient(int i) {
 		pressedKeys = new HashMap<>();
 		bats = new ArrayList<>();
 		balls = new ArrayList<>();
 		setSize(600, 600);
 		setLayout(null);
-		setBackground(Color.BLACK);
+//		setBackground(Color.BLACK);
 		players = i;
-		addBalls(1);
+		addBalls(2);
 		addBat(1);
 		addBat(2);
 		addBat(3);
 		addBat(4);
-		tm = new Timer (15, this);
+		tm = new Timer (5, this);
 		tm.start();
+		bats.get(1).setVisible(false);
+		bats.get(3).setVisible(false);
 	}
 	
 	public void add(Bat bat){
@@ -101,16 +103,16 @@ public class Contains extends JPanel implements ActionListener{
 			Ball ball = new Ball(100*j, 100*j);
 			add(ball);
 		}
-	}
-	static SocketClientExample sce; 
+	} 
 	
 	public static Socket socket;
+	public static Socket socket2;
 	public static void main (String[] args) throws Exception{
 		
 	     
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE );
-		frame.setContentPane(new Contains(4));
+		frame.setContentPane(new twoplayerclient(4));
 		frame.setLayout(null);
 		frame.pack();
 		frame.setSize(600+frame.getInsets().right+frame.getInsets().left+1, 600+frame.getInsets().top+frame.getInsets().bottom+1);
@@ -182,7 +184,7 @@ public class Contains extends JPanel implements ActionListener{
 	}
 	
 	public void abc(){
-		if(time%5000==0) {
+		if(time%15000==0) {
 			superpowers sball = new superpowers (300, 300);
 			sball.r=100;
 			sball.color=Color.green;
@@ -283,7 +285,7 @@ public class Contains extends JPanel implements ActionListener{
 	}
 	
 	public void Superspeed(){
-		if(time%21000==0){
+		if(time%20000==0){
 			superpowers ssball = new superpowers (300, 400);
 			ssball.r=100;
 			ssball.color=Color.DARK_GRAY;
@@ -335,7 +337,7 @@ public class Contains extends JPanel implements ActionListener{
 	}
 	
 	public void extralife(){
-		if(time%8000==0){
+		if(time%10000==0){
 			superpowers ssball = new superpowers (300, 400);
 			ssball.r=100;
 			ssball.color=Color.pink;
@@ -401,7 +403,7 @@ public class Contains extends JPanel implements ActionListener{
 	}
 	
 	public void Stonewall(){
-		if(time%31000==0){
+		if(time%30000==0){
 			superpowers ssball = new superpowers (300, 400);
 			ssball.r=100;
 			ssball.color=Color.YELLOW;
@@ -451,9 +453,6 @@ public class Contains extends JPanel implements ActionListener{
 	}
 	
 	
-	
-	
-		
 	public boolean isBetween(double x, double start, double range){
 		return (x>=start&&x<=start+range);
 	}
@@ -463,9 +462,9 @@ public class Contains extends JPanel implements ActionListener{
 		int fontSize = 20;
 		g.setFont(new Font("", Font.PLAIN, fontSize));
 	    g.setColor(Color.red);
-	    g.drawString("lives left  = " + bats.get(1).counter, 250, 30);
+//	    g.drawString("lives left  = " + bats.get(1).counter, 250, 30);
 	    g.drawString("lives left  = " + bats.get(0).counter, 30, 300);
-	    g.drawString("lives left  = " + bats.get(3).counter, 250, 570);
+//	    g.drawString("lives left  = " + bats.get(3).counter, 250, 570);
 	    g.drawString("lives left  = " + bats.get(2).counter, 470,300);
 	    
 	}
@@ -543,7 +542,7 @@ public class Contains extends JPanel implements ActionListener{
 		
 		
 		
-		time = time + 10;
+		time = time + 5;
 		repaint();
 		abc();
 		Superspeed();
@@ -556,18 +555,18 @@ public class Contains extends JPanel implements ActionListener{
 			this.getGraphics().setColor(c);
 			this.getGraphics().drawRect(0, 0, 2, 600);	
 		}
-		if(bats.get(3).Stonewall==true){
-			this.getGraphics().setColor(c);
-			this.getGraphics().fillRect(0, 598, 600, 2);
-			this.getGraphics().setColor(c);
-			this.getGraphics().drawRect(0, 598, 600, 2);
-		}
-		if(bats.get(1).Stonewall==true){
-			this.getGraphics().setColor(c);
-			this.getGraphics().fillRect(0, 0, 600, 2);
-			this.getGraphics().setColor(c);
-			this.getGraphics().drawRect(0, 0, 600, 2);
-		}
+//		if(bats.get(3).Stonewall==true){
+//			this.getGraphics().setColor(c);
+//			this.getGraphics().fillRect(0, 598, 600, 2);
+//			this.getGraphics().setColor(c);
+//			this.getGraphics().drawRect(0, 598, 600, 2);
+//		}
+//		if(bats.get(1).Stonewall==true){
+//			this.getGraphics().setColor(c);
+//			this.getGraphics().fillRect(0, 0, 600, 2);
+//			this.getGraphics().setColor(c);
+//			this.getGraphics().drawRect(0, 0, 600, 2);
+//		}
 		if(bats.get(2).Stonewall==true){
 			this.getGraphics().setColor(c);;
 			this.getGraphics().fillRect(598, 0, 2, 600);
@@ -582,24 +581,7 @@ public class Contains extends JPanel implements ActionListener{
 			}
 			
 
-//			if ((isBetween(ball.centre.x, bats.get(1).x, bats.get(1).length)&&ball.centre.y<=bats.get(1).y+10+7.5)){
-//				ball.vy = -ball.vy;
-//				ball.vx = ball.vx+(bats.get(1).velo);
-//				ball.setLocation(ball.x, bats.get(1).y+10);
-//			} else if ((isBetween(ball.centre.x, bats.get(3).x, bats.get(3).length)&&ball.centre.y>=bats.get(3).y-7.5)){
-//				ball.vy = -ball.vy;
-//				ball.vx = ball.vx+(bats.get(3).velo);
-//				ball.setLocation(ball.x, bats.get(3).y-15);
-//			}
-//			if ((isBetween(ball.centre.y, bats.get(0).y, bats.get(0).length)&&ball.centre.x<=bats.get(0).x+10+7.5)){
-//				ball.vx = -ball.vx;
-//				ball.vy = ball.vy-(bats.get(0).velo);
-//				ball.setLocation(bats.get(0).x+10, ball.y);
-//			} else if ((isBetween(ball.centre.y, bats.get(2).y, bats.get(2).length)&&ball.centre.x>=bats.get(2).x-7.5)){
-//				ball.vx = -ball.vx;
-//				ball.vy = ball.vy-(bats.get(2).velo);
-//				ball.setLocation(bats.get(2).x-15, ball.y);
-//			}
+
 			ballWall(ball);
 			
 		}
@@ -630,26 +612,73 @@ public class Contains extends JPanel implements ActionListener{
 			}
 		}
 		ballColl();
-		
-//		try {
-//			
-//			
-//			socket = new Socket("192.168.56.1", 9876);
-//			ObjectInputStream inin=new ObjectInputStream(socket.getInputStream());
-//			String message =  (String) inin.readObject();
-//			String[] info = message.split("\\s+");
-//			System.out.println("hello22");
-//			System.out.println(message);
-//			
-//			bats.get(0).setLocation(Integer.parseInt(info[0]), Integer.parseInt(info[1]));
-//			inin.close();
-//			
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
+		socketfn();
 	}
+	
+	public void socketfn(){
+		try {
+			socket = new Socket("192.168.56.1", 9876);
+			ObjectInputStream inin=new ObjectInputStream(socket.getInputStream());
+			String message =  (String) inin.readObject();
+			String[] info = message.split("\\s+");
+//			System.out.println("hello22");
+			System.out.println(message);
+//			
+			bats.get(2).setLocation(bats.get(2).x, Integer.parseInt(info[1]));
+			bats.get(2).velo = Integer.parseInt(info[2]);
+			if (info.length>3){
+				for (int f = 0; f<balls.size(); f++){
+					Ball bal = balls.get(f);
+					bal.setLocation(Integer.parseInt(info[3+f*4]), Integer.parseInt(info[4+f*4]));
+					bal.vx = Double.parseDouble(info[5+f*4]);
+					bal.vy = Double.parseDouble(info[6+f*4]);
+				}
+				time = Integer.parseInt(info[info.length-1].substring(4));
+				System.out.println(time);
+			}
+			
+			
+			
+			ObjectOutputStream out=new ObjectOutputStream(socket.getOutputStream());
+			String outinfo = bats.get(0).x+" "+bats.get(0).y+" "+bats.get(0).velo;
+			
+			out.writeObject(outinfo);
+			inin.close();
+			out.close();
+			if (time%5000==0&&time>=10000){
+				socket = new Socket("192.168.56.1" ,9876);
+				ObjectInputStream inin2=new ObjectInputStream(socket.getInputStream());
+				String powers = (String)(inin2.readObject());
+				System.out.println(powers);
+				String[] powerdiff = powers.split("\\s+");
+				for (int i = 0; i<powerdiff.length; i = i+2){
+					if (powerdiff[i].charAt(0)=='a'){
+						superball.vx = Double.parseDouble(powerdiff[i].substring(1));
+						superball.vy = Double.parseDouble(powerdiff[i+1]);
+						
+					} else if(powerdiff[i].charAt(0)=='b'){
+						superspeedball.vx = Double.parseDouble(powerdiff[i].substring(1));
+						superspeedball.vy = Double.parseDouble(powerdiff[i+1]);
+					}else if(powerdiff[i].charAt(0)=='c'){
+						extralifeball.vx = Double.parseDouble(powerdiff[i].substring(1));
+						extralifeball.vy = Double.parseDouble(powerdiff[i+1]);
+					}else if(powerdiff[i].charAt(0)=='d'){
+						stonewallball.vx = Double.parseDouble(powerdiff[i].substring(1));
+						stonewallball.vy = Double.parseDouble(powerdiff[i+1]);
+					}
+				}
+				inin2.close();
+			}
+			Thread.sleep(1);
+//			
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		repaint();
+	}
+
 
 }
 
