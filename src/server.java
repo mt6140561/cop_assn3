@@ -34,7 +34,7 @@ public class server {
 		
 		
 		
-	}
+		}
 		if(inp.equals("2")){
 			port=p+2;
 			serv= new ServerSocket(port);
@@ -83,17 +83,24 @@ public class server {
 			
 		}
 	}
+	
+	public static void main (String args[]) throws IOException{
+		server s = new server(55,"192.168.56.1");
+		
+	}
+	
+	
 	public server(int p)throws IOException{
 		
 			port=p;
 			serv= new ServerSocket(port);
 			serv.setSoTimeout(10000);
 			ser1=serv.accept();
-			ser2=serv.accept();
-			ser3=serv.accept();
+//			ser2=serv.accept();
+//			ser3=serv.accept();
 			if(ser1!=null){
 				c1=true;
-				client1=new Socket(ser1.getInetAddress(),p+1);
+//				client1=new Socket(ser1.getInetAddress(),p+1);
 				DataOutputStream out1= new DataOutputStream(ser1.getOutputStream());
 				out1.writeUTF("1");
 				
@@ -130,23 +137,23 @@ public class server {
 			out1.writeUTF(s);
 		}
 	}
-	public String[] recieve()throws IOException{
-		String[] a = new String[3];
+	public String recieve()throws IOException{
+		String a = new String();
 		if(c1==true){
 			DataInputStream in= new DataInputStream(client1.getInputStream());
-			a[0]=in.readUTF();
+			a=in.readUTF();
 			
 		}
 		
-		if(c2==true){
-			DataInputStream in= new DataInputStream(client2.getInputStream());
-			a[1]=in.readUTF();
-		}
-		if(c3==true){
-			DataInputStream in= new DataInputStream(client3.getInputStream());
-			a[2]=in.readUTF();
-			
-		}
+//		if(c2==true){
+//			DataInputStream in= new DataInputStream(client2.getInputStream());
+//			a[1]=in.readUTF();
+//		}
+//		if(c3==true){
+//			DataInputStream in= new DataInputStream(client3.getInputStream());
+//			a[2]=in.readUTF();
+//			
+//		}
 		return a;
 	}
 	public String[][] decipher(String s){

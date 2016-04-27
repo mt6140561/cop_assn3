@@ -17,11 +17,11 @@ public class Ball extends JLabel {
 	public Color color = Color.RED;
 	
 	public int randomselect(){
-		int vxx = (int)(Math.random()*20-Math.random()*20);
+		int vxx = (int)(Math.random()*6-Math.random()*6);
 		if(vxx==0){
 			vxx=randomselect();
 		}
-		vxx=1;
+		
 		return vxx;
 		
 	}
