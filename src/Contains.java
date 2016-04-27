@@ -4,11 +4,10 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,36 +38,29 @@ public class Contains extends JPanel implements ActionListener{
 	/**
 	 * Create the panel.
 	 */
-	public Contains(int i) {
+	public Contains(int i,int k) {
+		this.number=k;
 		pressedKeys = new HashMap<>();
 		bats = new ArrayList<>();
 		balls = new ArrayList<>();
 		setSize(600, 600);
 		setLayout(null);
-		setBackground(Color.BLACK);
 		players = i;
-//		Bat bat1 = new Bat(0, 0, 150, 3, 1);
-//		Bat bat2 = new Bat(0, 0, 150, 3, 2);
-//		Bat bat3 = new Bat(getWidth()-10, 0, 150, 3, 3);
-//		Bat bat4 = new Bat(0, getHeight()-10, 150, 3, 4);
-		addBalls(1);
-//		add(bat1);
-//		add(bat2);
-//		add(bat3);
-//		add(bat4);
+		if(k>=3){
+			k=3;
+		}
+		addBalls(k);
 		addBat(1);
 		addBat(2);
 		addBat(3);
 		addBat(4);
-		
-		tm = new Timer (1, this);
+		tm = new Timer (15, this);
 		tm.start();
-//		System.out.println((new Vector(1,7)).distance(new Vector(4,3)));
 	}
 	
 	public void add(Bat bat){
 		bat.balls=balls;
-		bat.bats=bats;
+//		bat.bats=bats;
 		bat.pressedKeys=pressedKeys;
 		bat.addAction2(pressedKeys);
 		bats.add(bat.pos-1, bat);
@@ -100,7 +92,7 @@ public class Contains extends JPanel implements ActionListener{
 		}
 	}
 	
-	
+	static int number=1;
 		
 	public void add(Ball ball){
 		super.add(ball);
@@ -114,22 +106,24 @@ public class Contains extends JPanel implements ActionListener{
 		}
 	}
 	
-	static SocketServerExample sse;
-	public static void main (String[] args) throws Exception {
-		String[] a={};
 	
-		server = new ServerSocket(9876);
+	public static Socket socket;
+	public static void main (String[] args) throws Exception{
 		
+	     
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE );
-		frame.setContentPane(new Contains(4));
+		frame.setContentPane(new Contains(4,number));
 		frame.setLayout(null);
 		frame.pack();
 		frame.setSize(600+frame.getInsets().right+frame.getInsets().left+1, 600+frame.getInsets().top+frame.getInsets().bottom+1);
 		frame.setVisible(true);
+		
+		
 	}
 	
 	public void ballWall(Ball ball){
+
 		double bx = ball.getLocation().getX();
 		double by = ball.getLocation().getY();
 		double newbx = bx+ball.vx;
@@ -140,24 +134,53 @@ public class Contains extends JPanel implements ActionListener{
 			} else {
 				ball.setLocation((int)newbx, (int)by);
 				if (ball.vy<0){
-					bats.get(1).counter = bats.get(1).counter-1;
+					if (bats.get(1).Stonewall == false){
+						bats.get(1).counter = bats.get(1).counter-1;
+					}
+					bats.get(1).changeLength(150);
+					bats.get(1).Stonewall = false;
+					bats.get(1).move = 8;
 //					System.out.println(bats.get(1).counter+" 1 ka");
 				} else {
-					bats.get(3).counter = bats.get(3).counter-1;
+					if (bats.get(3).Stonewall == false){
+						bats.get(3).counter = bats.get(3).counter-1;
+					}
+					
+					bats.get(3).changeLength(150);
+					bats.get(3).Stonewall = false;
+					bats.get(3).move = 8;
 //					System.out.println(bats.get(3).counter+" 3 ka");
 				}
+//				System.out.println(ball.vy+", "+k);
 				ball.vy = -ball.vy;
+				ball.vy = ceilroof(ball.vy);
+//				System.out.println(ball.vy+", "+k);
 			}
 		} else {
 			ball.setLocation((int)bx, (int)newby);
 			if (ball.vx<0){
-				bats.get(0).counter = bats.get(0).counter-1;
+				if (bats.get(0).Stonewall == false){	
+					bats.get(0).counter = bats.get(0).counter-1;
+				}
+				bats.get(0).changeLength(150);
+				bats.get(0).Stonewall = false;
+				bats.get(0).move = 8;
+
 //				System.out.println(bats.get(0).counter+" 0 ka");
 			} else {
-				bats.get(2).counter = bats.get(2).counter-1;
+				if (bats.get(2).Stonewall == false){
+					bats.get(2).counter = bats.get(2).counter-1;
+				}
+				bats.get(2).changeLength(150);
+				bats.get(2).Stonewall = false;
+				bats.get(2).move = 8;
+
 //				System.out.println(bats.get(2).counter+" 2 ka");
 			}
+//			System.out.println(ball.vx+", "+k);
 			ball.vx = -ball.vx;
+			ball.vx = ceilroof(ball.vx);
+//			System.out.println(ball.vx+", "+k);
 		}
 	}
 	
@@ -433,173 +456,7 @@ public class Contains extends JPanel implements ActionListener{
 	
 	
 	
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-	
 		
-		time = time + 10;
-		repaint();
-	//	abc();
-		//Superspeed();
-		//extralife();
-		Stonewall();
-		Color c= Color.CYAN;
-		if(bats.get(0).Stonewall==true){
-			this.getGraphics().setColor(c);;
-			this.getGraphics().fillRect(0, 0, 2, 600);
-			this.getGraphics().setColor(c);
-			this.getGraphics().drawRect(0, 0, 2, 600);	
-		}
-		if(bats.get(3).Stonewall==true){
-			this.getGraphics().setColor(c);
-			this.getGraphics().fillRect(0, 598, 600, 2);
-			this.getGraphics().setColor(c);
-			this.getGraphics().drawRect(0, 598, 600, 2);
-		}
-		if(bats.get(1).Stonewall==true){
-			this.getGraphics().setColor(c);
-			this.getGraphics().fillRect(0, 0, 600, 2);
-			this.getGraphics().setColor(c);
-			this.getGraphics().drawRect(0, 0, 600, 2);
-		}
-		if(bats.get(2).Stonewall==true){
-			this.getGraphics().setColor(c);;
-			this.getGraphics().fillRect(598, 0, 2, 600);
-			this.getGraphics().setColor(c);
-			this.getGraphics().drawRect(598, 0, 2, 600);	
-		}
-		for(int k = 0; k<balls.size(); k++) {
-			Ball ball = balls.get(k);
-		//	bats.get(0).toAI();
-			//bats.get(2).toAI();
-//			bats.get(1).toAI();
-			//bats.get(3).toAI();
-//			bats.get(1).addAI(ball, pressedKeys);
-//			bats.get(3).addAI(ball, pressedKeys);
-//			ballWall(ball);
-//			for (int o = 0; o<bats.size(); o++){
-//				bats.get(o).ballColl(ball);
-//				
-//			}
-//			System.out.println(ball.vx+", "+ball.vy+", "+ k);
-			double bx = ball.getLocation().getX();
-			double by = ball.getLocation().getY();
-			double newbx = bx+ball.vx;
-			double newby = by+ball.vy;
-			if (newbx>=0&&newbx<ball.getParent().getWidth()-15) {
-				if ((newby>=0&&newby<ball.getParent().getHeight()-15)) {
-					ball.setLocation((int)newbx, (int)newby);
-				} else {
-					ball.setLocation((int)newbx, (int)by);
-					if (ball.vy<0){
-						if (bats.get(1).Stonewall == false){
-							bats.get(1).counter = bats.get(1).counter-1;
-						}
-						bats.get(1).changeLength(150);
-						bats.get(1).Stonewall = false;
-						bats.get(1).move = 8;
-//						System.out.println(bats.get(1).counter+" 1 ka");
-					} else {
-						if (bats.get(3).Stonewall == false){
-							bats.get(3).counter = bats.get(3).counter-1;
-						}
-						
-						bats.get(3).changeLength(150);
-						bats.get(3).Stonewall = false;
-						bats.get(3).move = 8;
-//						System.out.println(bats.get(3).counter+" 3 ka");
-					}
-					System.out.println(ball.vy+", "+k);
-					ball.vy = -ball.vy;
-					System.out.println(ball.vy+", "+k);
-				}
-			} else {
-				ball.setLocation((int)bx, (int)newby);
-				if (ball.vx<0){
-					if (bats.get(0).Stonewall == false){	
-						bats.get(0).counter = bats.get(0).counter-1;
-					}
-					bats.get(0).changeLength(150);
-					bats.get(0).Stonewall = false;
-					bats.get(0).move = 8;
-
-//					System.out.println(bats.get(0).counter+" 0 ka");
-				} else {
-					if (bats.get(2).Stonewall == false){
-						bats.get(2).counter = bats.get(2).counter-1;
-					}
-					bats.get(2).changeLength(150);
-					bats.get(2).Stonewall = false;
-					bats.get(2).move = 8;
-
-//					System.out.println(bats.get(2).counter+" 2 ka");
-				}
-				//System.out.println(ball.vx+", "+k);
-				ball.vx = -ball.vx;
-				//System.out.println(ball.vx+", "+k);
-			}
-			if ((isBetween(ball.centre.x, bats.get(1).x, bats.get(1).length)&&ball.centre.y<=bats.get(1).y+10+7.5)){
-				ball.vy = -ball.vy;
-				ball.vx = ball.vx+(bats.get(1).velo);
-				ball.setLocation(ball.x, bats.get(1).y+10);
-//				bats.get(1).changeLength(250);
-			} else if ((isBetween(ball.centre.x, bats.get(3).x, bats.get(3).length)&&ball.centre.y>=bats.get(3).y-7.5)){
-				ball.vy = -ball.vy;
-				ball.vx = ball.vx+(bats.get(3).velo);
-				ball.setLocation(ball.x, bats.get(3).y-15);
-//				bats.get(3).changeLength(250);
-			}
-			if ((isBetween(ball.centre.y, bats.get(0).y, bats.get(0).length)&&ball.centre.x<=bats.get(0).x+10+7.5)){
-				ball.vx = -ball.vx;
-//				System.out.println(ball.vy);
-				ball.vy = ball.vy-(bats.get(0).velo);
-//				System.out.println(ball.vy);
-				ball.setLocation(bats.get(0).x+10, ball.y);
-//				bats.get(0).changeLength(250);
-			} else if ((isBetween(ball.centre.y, bats.get(2).y, bats.get(2).length)&&ball.centre.x>=bats.get(2).x-7.5)){
-				ball.vx = -ball.vx;
-				ball.vy = ball.vy-(bats.get(2).velo);
-				ball.setLocation(bats.get(2).x-15, ball.y);
-//				bats.get(2).changeLength(250);
-			}
-//			ballWall(ball);
-			
-		}
-		int dir = 0;
-		
-		Iterator l = pressedKeys.entrySet().iterator();
-		while (l.hasNext()) {
-			HashMap.Entry i = (HashMap.Entry)l.next();
-			Bat bat = (Bat) i.getValue();
-			String key = (String) i.getKey();
-			String s = key.substring(8);
-			
-			dir = 0;
-			if (s.equals("UP")||s.equals("I")||s.equals("W")||s.equals("RIGHT")) {
-				dir = bat.move;
-			} else {dir = -1*bat.move;}
-			if (bat.pos == 1||bat.pos == 3){
-				if (bat.getLocation().getY()-dir>=0&&bat.getLocation().getY()-dir<=bat.getParent().getHeight()-bat.length){
-					bat.setLocation(bat.x, bat.y-dir);
-					bat.velo = dir/8;
-//					System.out.println(bat.velo);
-				} else {bat.velo = 0;}
-			} else {
-				if (bat.getLocation().getX()+dir>=0&&bat.getLocation().getX()+dir<=bat.getParent().getHeight()-bat.length){
-					bat.setLocation(bat.x+dir, bat.y);
-					bat.velo = dir/8;
-//					System.out.println(bat.velo);
-				} else {bat.velo = 0;}
-			}
-		}
-		ballColl();
-		
-	}
-	 static ServerSocket server;
-	    //socket server port on which it will listen
-	static  Socket socket;
-	   
-	
 	public boolean isBetween(double x, double start, double range){
 		return (x>=start&&x<=start+range);
 	}
@@ -623,6 +480,26 @@ public class Contains extends JPanel implements ActionListener{
 			a = -1;
 		}
 		return a;
+	}
+	
+	public void decipher(String sa[][]){
+		for(int i=0;i<sa.length;i++){
+			if(sa[i][0].equals("ballposition")){
+				balls.get(0).x=Integer.parseInt(sa[i][1]);
+				balls.get(0).y=Integer.parseInt(sa[i][2]);
+			}
+			if(sa[i][0].equals("batposition")){
+				bats.get(2).x=Integer.parseInt(sa[i][1]);
+				bats.get(2).y=Integer.parseInt(sa[i][2]);
+			}
+			if(sa[i][0].equals("length")){
+				bats.get(2).length=Integer.parseInt(sa[i][1]);
+			}
+			if(sa[i][0].equals("life")){
+				bats.get(2).counter=Integer.parseInt(sa[i][1]);
+			}
+			
+		}
 	}
 	
 	public void ballColl(){
@@ -656,26 +533,126 @@ public class Contains extends JPanel implements ActionListener{
 							b1.vy = ceilroof(v1r*sin + v1t*cos);
 							b2.vx = ceilroof(v2r*cos - v2t*sin);
 							b2.vy = ceilroof(v2r*sin + v2t*cos);
-					//		System.out.println(b1.vx+", "+b1.vy+",/ "+((sin*sin)+(cos*cos))+",/ "+b2.vx+", "+b2.vy);
+//							System.out.println(b1.vx+", "+b1.vy+",/ "+((sin*sin)+(cos*cos))+",/ "+b2.vx+", "+b2.vy);
 						}
 					}
 				}
 			}
 		}
 	}
+	
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		
+		
+		
+		time = time + 10;
+		repaint();
+		abc();
+		Superspeed();
+		extralife();
+		Stonewall();
+		Color c= Color.CYAN;
+		if(bats.get(0).Stonewall==true){
+			this.getGraphics().setColor(c);;
+			this.getGraphics().fillRect(0, 0, 2, 600);
+			this.getGraphics().setColor(c);
+			this.getGraphics().drawRect(0, 0, 2, 600);	
+		}
+		if(bats.get(3).Stonewall==true){
+			this.getGraphics().setColor(c);
+			this.getGraphics().fillRect(0, 598, 600, 2);
+			this.getGraphics().setColor(c);
+			this.getGraphics().drawRect(0, 598, 600, 2);
+		}
+		if(bats.get(1).Stonewall==true){
+			this.getGraphics().setColor(c);
+			this.getGraphics().fillRect(0, 0, 600, 2);
+			this.getGraphics().setColor(c);
+			this.getGraphics().drawRect(0, 0, 600, 2);
+		}
+		if(bats.get(2).Stonewall==true){
+			this.getGraphics().setColor(c);;
+			this.getGraphics().fillRect(598, 0, 2, 600);
+			this.getGraphics().setColor(c);
+			this.getGraphics().drawRect(598, 0, 2, 600);	
+		}
+		for(int k = 0; k<balls.size(); k++) {
+			Ball ball = balls.get(k);
+			
+			for (Bat bat : bats){
+				bat.ballBat(ball);
+			}
+		
+
+//			if ((isBetween(ball.centre.x, bats.get(1).x, bats.get(1).length)&&ball.centre.y<=bats.get(1).y+10+7.5)){
+//				ball.vy = -ball.vy;
+//				ball.vx = ball.vx+(bats.get(1).velo);
+//				ball.setLocation(ball.x, bats.get(1).y+10);
+//			} else if ((isBetween(ball.centre.x, bats.get(3).x, bats.get(3).length)&&ball.centre.y>=bats.get(3).y-7.5)){
+//				ball.vy = -ball.vy;
+//				ball.vx = ball.vx+(bats.get(3).velo);
+//				ball.setLocation(ball.x, bats.get(3).y-15);
+//			}
+//			if ((isBetween(ball.centre.y, bats.get(0).y, bats.get(0).length)&&ball.centre.x<=bats.get(0).x+10+7.5)){
+//				ball.vx = -ball.vx;
+//				ball.vy = ball.vy-(bats.get(0).velo);
+//				ball.setLocation(bats.get(0).x+10, ball.y);
+//			} else if ((isBetween(ball.centre.y, bats.get(2).y, bats.get(2).length)&&ball.centre.x>=bats.get(2).x-7.5)){
+//				ball.vx = -ball.vx;
+//				ball.vy = ball.vy-(bats.get(2).velo);
+//				ball.setLocation(bats.get(2).x-15, ball.y);
+//			}
+			ballWall(ball);
+			
+		}
+		int dir = 0;
+		
+		Iterator l = pressedKeys.entrySet().iterator();
+		while (l.hasNext()) {
+			HashMap.Entry i = (HashMap.Entry)l.next();
+			Bat bat = (Bat) i.getValue();
+			String key = (String) i.getKey();
+			String s = key.substring(8);
+			
+			dir = 0;
+			if (s.equals("UP")||s.equals("I")||s.equals("W")||s.equals("RIGHT")) {
+				dir = bat.move;
+			} else {dir = -1*bat.move;}
+			if (bat.pos == 1||bat.pos == 3){
+				if (bat.getLocation().getY()-dir>=0&&bat.getLocation().getY()-dir<=bat.getParent().getHeight()-bat.length){
+					bat.setLocation(bat.x, bat.y-dir);
+					bat.velo = dir/8;
+//					System.out.println(bat.velo);
+				} else {bat.velo = 0;}
+			} else {
+				if (bat.getLocation().getX()+dir>=0&&bat.getLocation().getX()+dir<=bat.getParent().getHeight()-bat.length){
+					bat.setLocation(bat.x+dir, bat.y);
+					bat.velo = dir/8;
+				} else {bat.velo = 0;}
+			}
+		}
+		ballColl();
+		
+//		try {
+//			
+//			
+//			socket = new Socket("192.168.56.1", 9876);
+//			ObjectInputStream inin=new ObjectInputStream(socket.getInputStream());
+//			String message =  (String) inin.readObject();
+//			String[] info = message.split("\\s+");
+//			System.out.println("hello22");
+//			System.out.println(message);
+//			
+//			bats.get(0).setLocation(Integer.parseInt(info[0]), Integer.parseInt(info[1]));
+//			inin.close();
+//			
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
+	}
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

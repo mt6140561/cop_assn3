@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2669a0ae072a3e358a9060359cfde8afaec6c4e6
 import java.io.*;
 import java.net.*;
 
@@ -6,14 +9,21 @@ public class ServerThread extends Thread {
 	 protected Socket socket;
 	 public String messagein;
 	 public String messageout;
+<<<<<<< HEAD
 	 public boolean f=false,completed=false;
 	 
+=======
+	 public boolean f=false;
+>>>>>>> 2669a0ae072a3e358a9060359cfde8afaec6c4e6
 	    public ServerThread(Socket clientSocket) {
 	        this.socket = clientSocket;
 	    }
 	    
 	    public void run() {
+<<<<<<< HEAD
 	    	completed=false;
+=======
+>>>>>>> 2669a0ae072a3e358a9060359cfde8afaec6c4e6
 	        InputStream inp = null;
 	        DataInputStream brinp = null;
 	        DataOutputStream out = null;
@@ -24,7 +34,11 @@ public class ServerThread extends Thread {
 	        } catch (IOException e) {
 	            return;
 	        }
+<<<<<<< HEAD
 	        
+=======
+	        String line;
+>>>>>>> 2669a0ae072a3e358a9060359cfde8afaec6c4e6
 	        if(f==false){
 	        try {
 				messagein=brinp.readUTF();
@@ -43,10 +57,15 @@ public class ServerThread extends Thread {
 					//e.printStackTrace();
 				//}
 		        try {
+<<<<<<< HEAD
 		        	System.out.print(messageout);
 					out.writeUTF(messageout);
 				
 		        } 
+=======
+					out.writeUTF(messageout);
+				} 
+>>>>>>> 2669a0ae072a3e358a9060359cfde8afaec6c4e6
 		        catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -75,11 +94,17 @@ public class ServerThread extends Thread {
 	            catch(IOException ie){
 	                System.out.println("Socket Close Error");
 	            }
+<<<<<<< HEAD
 	            completed=true;
+=======
+>>>>>>> 2669a0ae072a3e358a9060359cfde8afaec6c4e6
 	            }
 	        
 	        
 	    }
+<<<<<<< HEAD
 	    
 
 
+=======
+>>>>>>> 2669a0ae072a3e358a9060359cfde8afaec6c4e6

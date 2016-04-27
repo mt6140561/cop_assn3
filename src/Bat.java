@@ -22,7 +22,7 @@ public class Bat extends JPanel{
 
 	public HashMap<String, Bat> pressedKeys;
 	public ArrayList<Ball> balls;
-	public ArrayList<Bat> bats;
+
 	public boolean Stonewall = false;
 	public Bat (int x, int y, int length, int counter, int pos) {
 		this.x = x;
@@ -46,31 +46,102 @@ public class Bat extends JPanel{
 			
 	}
 	
-//	public void ballColl(Ball ball){
-//		double 
-//		if(ball.centre.x-7.5>=x&&ball.centre.x+7.5<=getSize().getWidth()){
-//			if (){
-//				ball.vy = - ball.vy+velo;
-//				System.out.println("height");
-//				ball.setLocation(ball.x, (int)getSize().getHeight());
-//			} else if (ball.centre.y+7.5>=y&&ball.centre.y+7.5+10>=y+getSize().getHeight()){
-//				ball.vy = - ball.vy+velo;
-//				System.out.println("or not");
-//				ball.setLocation(ball.x, y);
-//			} else {}
-//		}
-//		if(ball.centre.y-7.5>=y&&ball.centre.y+7.5<=getSize().getHeight()){
-//			if (ball.centre.x-7.5<=getSize().getWidth()){
-//				ball.vx = - ball.vx+velo;
-//				ball.setLocation((int)getSize().getWidth(), ball.y);
-//			} else if (ball.centre.x+7.5>=x){
-//				ball.vx = - ball.vx+velo;
-//				ball.setLocation(x, ball.y);
-//			} else {}
-//		}
-//		changeLength(250);
-//	}
-//	
+	public boolean isBetween(double x, double start, double range){
+		return (x>=start&&x<=start+range);
+	}
+	
+	public void ballBat(Ball ball){
+		
+		switch (pos){
+		case 1:
+			if (isBetween(ball.centre.y, y,length)&&ball.centre.x<=x+10+7.5){
+				ball.vx = -ball.vx;
+				ball.vy = ball.vy-(velo);
+				ball.setLocation(x+10, ball.y);
+			} else if (isBetween(ball.x, x, 10)){
+				if (isBetween(ball.centre.y+7.5, y, length/2)){
+					ball.setLocation(ball.x, y-15);
+					ball.vy = -ball.vy;
+					if (ball.vy<ball.vy+velo){
+						ball.vy = ball.vy+velo;
+					}
+				} else if (isBetween(ball.centre.y+7.5, y+(length/2), length/2)){
+					ball.setLocation(ball.x, y+length);
+					ball.vy = -ball.vy;
+					if (ball.vy<ball.vy+velo){
+						ball.vy = ball.vy+velo;
+					}
+				} else {}
+			}
+			break;
+		
+		case 2:
+			if ((isBetween(ball.centre.x, x, length)&&ball.centre.y<=y+10+7.5)){
+				ball.vy = -ball.vy;
+				ball.vx = ball.vx+(velo);
+				ball.setLocation(ball.x, y+10);
+			} else if (isBetween(ball.y, y, 10)){
+				if (isBetween(ball.centre.x+7.5, x, length/2)){
+					ball.setLocation(x-15, ball.y);
+					ball.vx = -ball.vx;
+					if (ball.vx<ball.vx+velo){
+						ball.vx = ball.vx+velo;
+					}
+				} else if (isBetween(ball.centre.x+7.5, x+(length/2), length/2)){
+					ball.setLocation(x+length, ball.y);
+					ball.vx = -ball.vx;
+					if (ball.vx<ball.vx+velo){
+						ball.vx = ball.vx+velo;
+					}
+				} else {}
+			}
+			break;
+			
+		case 3:
+			if ((isBetween(ball.centre.y, y, length)&&ball.centre.x>=x-7.5)){
+				ball.vx = -ball.vx;
+				ball.vy = ball.vy-(velo);
+				ball.setLocation(x-15, ball.y);
+			} else if (isBetween(ball.x, x, 10)){
+				if (isBetween(ball.centre.y+7.5, y, length/2)){
+					ball.setLocation(ball.x, y-15);
+					ball.vy = -ball.vy;
+					if (ball.vy<ball.vy+velo){
+						ball.vy = ball.vy+velo;
+					}
+				} else if (isBetween(ball.centre.y+7.5, y+(length/2), length/2)){
+					ball.setLocation(ball.x, y+length);
+					ball.vy = -ball.vy;
+					if (ball.vy<ball.vy+velo){
+						ball.vy = ball.vy+velo;
+					}
+				} else {}
+			}
+			break;
+			
+		case 4:
+			if ((isBetween(ball.centre.x, x,length)&&ball.centre.y>=y-7.5)){
+				ball.vy = -ball.vy;
+				ball.vx = ball.vx+(velo);
+				ball.setLocation(ball.x, y-15);
+			} else if (isBetween(ball.y, y, 10)){
+				if (isBetween(ball.centre.x+7.5, x, length/2)){
+					ball.setLocation(x-15, ball.y);
+					ball.vx = -ball.vx;
+					if (ball.vx<ball.vx+velo){
+						ball.vx = ball.vx+velo;
+					}
+				} else if (isBetween(ball.centre.x+7.5, x+(length/2), length/2)){
+					ball.setLocation(x+length, ball.y);
+					ball.vx = -ball.vx;
+					if (ball.vx<ball.vx+velo){
+						ball.vx = ball.vx+velo;
+					}
+				} else {}
+			}
+		}
+	}
+	
 	public void addAction2(HashMap<String, Bat> pressedKeys) {
 		int i = pos;
 		String a = "UP";
@@ -367,8 +438,8 @@ return x;
 	public void toAI(){
 		
 		if(pos==4){
-			int a =bats.get(3).findx() ;
-			int dis = a - bats.get(3).x - ((bats.get(3).length)/2 );
+			int a =findx() ;
+			int dis = a - x - ((length)/2 );
 			System.out.println(a );
 			//if(a>bats.get(3).x + ((bats.get(3).length)/2) + 100 && a<bats.get(3).x + ((bats.get(3).length)/2)-100)
 			if(dis>-10 && dis<10)
@@ -379,23 +450,23 @@ return x;
 			else
 			{
 			
-			if(a>bats.get(3).x + ((bats.get(3).length)/2)){
+			if(a>x + ((length)/2)){
 				System.out.println("qwweqw");
 				pressedKeys.remove("pressed LEFT");
-				pressedKeys.put("pressed RIGHT",bats.get(3) );
+				pressedKeys.put("pressed RIGHT",this );
 			}	
 			
 			else{
 				System.out.println("ssss");
 				pressedKeys.remove("pressed RIGHT");
-				pressedKeys.put("pressed LEFT",bats.get(3) );
+				pressedKeys.put("pressed LEFT",this );
 			}}
 		
 		}
 		else{
 			if(pos==2){
-				int a =bats.get(1).findx() ;
-				int dis = a - bats.get(1).x - ((bats.get(1).length)/2 );
+				int a =findx() ;
+				int dis = a - x - ((length)/2 );
 				System.out.println(a +"  ");
 				//if(a>bats.get(3).x + ((bats.get(3).length)/2) + 100 && a<bats.get(3).x + ((bats.get(3).length)/2)-100)
 				if(dis>-10 && dis<10)
@@ -406,16 +477,16 @@ return x;
 				else
 				{
 				
-				if(a>bats.get(1).x + ((bats.get(1).length)/2)){
+				if(a>x + ((length)/2)){
 					System.out.println("qwweqw");
 					pressedKeys.remove("pressed U");
-					pressedKeys.put("pressed I",bats.get(1) );
+					pressedKeys.put("pressed I",this );
 				}	
 				
 				else{
 					System.out.println("ssss");
 					pressedKeys.remove("pressed I");
-					pressedKeys.put("pressed U",bats.get(1) );
+					pressedKeys.put("pressed U",this );
 				}}
 			
 				
@@ -423,8 +494,8 @@ return x;
 				
 			}else{
 				if(pos==3){
-					int a =bats.get(2).findx() ;
-					int dis = a - bats.get(2).y - ((bats.get(2).length)/2 );
+					int a =findx() ;
+					int dis = a - y - ((length)/2 );
 					System.out.println(dis );
 					//if(a>bats.get(3).x + ((bats.get(3).length)/2) + 100 && a<bats.get(3).x + ((bats.get(3).length)/2)-100)
 					if(dis>-5 && dis<5)
@@ -438,21 +509,21 @@ return x;
 					if(dis>0){
 						System.out.println("qwweqw");
 						pressedKeys.remove("pressed UP");
-						pressedKeys.put("pressed DOWN",bats.get(2) );
+						pressedKeys.put("pressed DOWN",this );
 					}	
 					
 					else{
 						System.out.println("ssss");
 						pressedKeys.remove("pressed DOWN");
-						pressedKeys.put("pressed UP",bats.get(2) );
+						pressedKeys.put("pressed UP",this );
 					}}	
 					
 					
 				}
 				else{
 					if(pos==1){
-						int a =bats.get(0).findx() ;
-						int dis = a - bats.get(0).y - ((bats.get(0).length)/2 );
+						int a =findx() ;
+						int dis = a - y - ((length)/2 );
 						System.out.println(a );
 						//if(a>bats.get(3).x + ((bats.get(3).length)/2) + 100 && a<bats.get(3).x + ((bats.get(3).length)/2)-100)
 						if(dis>-10 && dis<10)
@@ -463,121 +534,21 @@ return x;
 						else
 						{
 						
-						if(a>bats.get(0).y + ((bats.get(0).length)/2)){
+						if(a>y + ((length)/2)){
 							System.out.println("qwweqw");
 							pressedKeys.remove("pressed W");
-							pressedKeys.put("pressed S",bats.get(0) );
+							pressedKeys.put("pressed S",this);
 						}	
 						
 						else{
 							System.out.println("ssss");
 							pressedKeys.remove("pressed S");
-							pressedKeys.put("pressed W",bats.get(0) );
-						}}	
-						
-						
-						
-						
-					}
-					
-					
-					
-				}
-				
-				
-				
-				
-				
-			}
-			
-			
-			
-			
-			
-			
-		}
-		
-		
+							pressedKeys.put("pressed W",this );
+						}
+						}		
+					}	
+				}	
+			}	
+		}	
 	}
-	
-	
-//	
-//	public void addAI(Ball ball, HashMap<String, Bat> pressedKeys) {
-//		int a1 = length/3;
-//		int b1 = (2*length)/3;
-////		System.out.println(b1+""+a1);
-//		if (pos == 1){
-//			if (ball.vx !=0){
-//				double t = (ball.x)/((-1)*ball.vx);
-//				int projected = (int) (ball.y +ball.vy*t);
-//				if (projected>=y+10&&projected<=y+b1){
-//					pressedKeys.remove("pressed W");
-//					pressedKeys.remove("pressed S");
-//					velo = 0;
-//				} else if (projected<(y+a1)) {
-//					pressedKeys.remove("pressed S");
-//					pressedKeys.put("pressed W", this);
-//				} else if (projected>(y+b1)) {
-//					pressedKeys.remove("pressed W");
-//					pressedKeys.put("pressed S", this);
-//				}
-//			}
-//		} else if (pos == 3){
-//			if (ball.vx !=0){
-//				double t = (getParent().getWidth()-ball.x)/ball.vx;
-//				int projected = (int) (ball.y +ball.vy*t);
-//				if (projected>=y+10&&projected<=y+b1){
-//					pressedKeys.remove("pressed UP");
-//					pressedKeys.remove("pressed DOWN");
-//					velo = 0;
-//				} else if (projected<(y+a1)) {
-//					pressedKeys.remove("pressed DOWN");
-//					pressedKeys.put("pressed UP", this);
-//				} else if (projected>(y+b1)) {
-//					pressedKeys.remove("pressed UP");
-//					pressedKeys.put("pressed DOWN", this);
-//				}
-//			}
-//		} else if (pos == 2){
-//			if (ball.vy !=0){
-//				double t = ball.y/((-1)*ball.vy);
-//				int projected = (int) (ball.x +ball.vx*t);
-////				System.out.println(t+", "+projected);
-//				if (projected>=x+a1&&projected<=x+b1){
-//					pressedKeys.remove("pressed I");
-//					pressedKeys.remove("pressed U");
-//					velo = 0;
-////					System.out.println("ai released"+pressedKeys.size());
-//				} else if (projected>(x+b1)) {
-//					pressedKeys.remove("pressed U");
-//					pressedKeys.put("pressed I", this);
-////					System.out.println("Up"+pressedKeys.size());
-//				} else if (projected<(x+a1)) {
-//					pressedKeys.remove("pressed I");
-//					pressedKeys.put("pressed U", this);
-////					System.out.println("Down"+pressedKeys.size());
-//				}
-//			}
-//		} else if (pos == 4){
-//			if (ball.vy !=0){
-//				double t = (getParent().getHeight()-ball.y)/(ball.vy);
-//				int projected = (int) (ball.x +ball.vx*t);
-////				System.out.println(t+", "+projected);
-//				if (projected>=x+a1&&projected<=x+b1){
-//					pressedKeys.remove("pressed RIGHT");
-//					pressedKeys.remove("pressed LEFT");
-//					velo = 0;
-////					System.out.println("ai released"+pressedKeys.size());
-//				} else if (projected>(x+b1)) {
-//					pressedKeys.remove("pressed LEFT");
-//					pressedKeys.put("pressed RIGHT", this);
-////					System.out.println("Up"+pressedKeys.size());
-//				} else if (projected<(x+a1)) {
-//					pressedKeys.remove("pressed RIGHT");
-//					pressedKeys.put("pressed LEFT", this);
-////					System.out.println("Down"+pressedKeys.size());
-//				}
-//			}
-//		}
-//	}
 }

@@ -17,7 +17,7 @@ public class Ball extends JLabel {
 	public Color color = Color.RED;
 	
 	public int randomselect(){
-		int vxx = (int)(Math.random()*10-Math.random()*10);
+		int vxx = (int)(Math.random()*30-Math.random()*30);
 		if(vxx==0){
 			vxx=randomselect();
 		}

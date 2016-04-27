@@ -73,7 +73,7 @@ public class fourplayerserver extends JPanel implements ActionListener{
 	
 	public void add(Bat bat){
 		bat.balls=balls;
-		bat.bats=bats;
+//		bat.bats=bats;
 		bat.pressedKeys=pressedKeys;
 		bat.addAction2(pressedKeys);
 		bats.add(bat.pos-1, bat);
@@ -118,16 +118,20 @@ public class fourplayerserver extends JPanel implements ActionListener{
 			add(ball);
 		}
 	}
-	static ServerSocket server1;
+	
+	
+	
+	
 	static SocketServerExample sse;
 	public static void main (String[] args) throws Exception {
 		
 	
-		srv = new Server();
-		 
+		server1 = new ServerSocket(111);
+		server2 = new ServerSocket(222);
+		server3=new ServerSocket(333);
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE );
-		frame.setContentPane(new twoplayerserver(4,2));
+		frame.setContentPane(new fourplayerserver(4,2));
 		frame.setLayout(null);
 		frame.pack();
 		frame.setSize(600+frame.getInsets().right+frame.getInsets().left+1, 600+frame.getInsets().top+frame.getInsets().bottom+1);
@@ -611,8 +615,9 @@ public class fourplayerserver extends JPanel implements ActionListener{
 	
 	
 	Socket socket2;
-	
 	boolean abc= true;
+	
+	
 	public void socketfn(){
 
 	
@@ -620,7 +625,7 @@ public class fourplayerserver extends JPanel implements ActionListener{
 		String s=" ";
 		
 	
-		if(time%10000==0||time<1000){
+		if(time%2000==0||time<1000){
 		for(int i=0;i<balls.size();i++){
 			
 			Ball ball=balls.get(i);
@@ -633,23 +638,78 @@ public class fourplayerserver extends JPanel implements ActionListener{
 		
 		if(abc==true){
 				try{
-					srv.
+			//System.out.println("asdasd");
+	    	socket=server1.accept();
+
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        	String mess = (String) ois.readObject();
+        //	System.out.print("assa");
+        	
+        	String[] abcd = mess.split("\\s+");
+        	bats.get(0).setLocation(Integer.parseInt(abcd[0]), Integer.parseInt(abcd[1]));
+        	bats.get(0).velo=Integer.parseInt(abcd[2]);
+        	 
+	            ois.close();
+	          
+        	 socket.close();
+ 	    	socket=server2.accept();
+
+             ois = new ObjectInputStream(socket.getInputStream());
+        	 mess = (String) ois.readObject();
+        //	System.out.print("assa");
+        	
+        	 abcd = mess.split("\\s+");
+        	bats.get(1).setLocation(Integer.parseInt(abcd[0]), Integer.parseInt(abcd[1]));
+        	bats.get(1).velo=Integer.parseInt(abcd[2]);
+        	 
+	            ois.close();
+	          
+        	 socket.close();
+//
+//  	    	socket=server3.accept();
+//
+//            ois = new ObjectInputStream(socket.getInputStream());
+//       	 mess = (String) ois.readObject();
+//       //	System.out.print("assa");
+//       	
+//       	 abcd = mess.split("\\s+");
+//       	bats.get(1).setLocation(Integer.parseInt(abcd[0]), Integer.parseInt(abcd[1]));
+//       	bats.get(1).velo=Integer.parseInt(abcd[2]);
+//       	 
+//	            ois.close();
+//	          
+//       	 socket.close();
+//        	 
+        	 
+        	 
 	        	 }
+			
+		
+		
+		
+		
+		
+		
 		
 		catch(Exception e){
 			abc=false;
 			e.printStackTrace();
+			bats.get(0).toAI();
 		}	}
 		
 		else{
 			bats.get(0).toAI();
 		}
+		
+		repaint();
 	}
 	
+	static ServerSocket server1;
+	static ServerSocket server2;
+	static ServerSocket server3;
 	
-	static Server srv;
 	
-	 static ServerSocket server;
+	 
 	    //socket server port on which it will listen
 	static  Socket socket;
 	   
@@ -717,12 +777,7 @@ public class fourplayerserver extends JPanel implements ActionListener{
 			}
 		}
 	}
-	
-	
 }
-
-
-
 
 
 
