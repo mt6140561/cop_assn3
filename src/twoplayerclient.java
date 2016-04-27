@@ -615,67 +615,78 @@ public class twoplayerclient extends JPanel implements ActionListener{
 		socketfn();
 	}
 	
+	boolean abc=true;
+	
 	public void socketfn(){
-		try {
-			socket = new Socket("192.168.56.1", 9876);
-			ObjectInputStream inin=new ObjectInputStream(socket.getInputStream());
-			String message =  (String) inin.readObject();
-			String[] info = message.split("\\s+");
-//			System.out.println("hello22");
-			System.out.println(message);
-//			
-			bats.get(2).setLocation(bats.get(2).x, Integer.parseInt(info[1]));
-			bats.get(2).velo = Integer.parseInt(info[2]);
-			if (info.length>3){
-				for (int f = 0; f<balls.size(); f++){
-					Ball bal = balls.get(f);
-					bal.setLocation(Integer.parseInt(info[3+f*4]), Integer.parseInt(info[4+f*4]));
-					bal.vx = Double.parseDouble(info[5+f*4]);
-					bal.vy = Double.parseDouble(info[6+f*4]);
-				}
-				time = Integer.parseInt(info[info.length-1].substring(4));
-				System.out.println(time);
-			}
-			
-			
-			
-			ObjectOutputStream out=new ObjectOutputStream(socket.getOutputStream());
-			String outinfo = bats.get(0).x+" "+bats.get(0).y+" "+bats.get(0).velo;
-			
-			out.writeObject(outinfo);
-			inin.close();
-			out.close();
-			if (time%5000==0&&time>=10000){
-				socket = new Socket("192.168.56.1" ,9876);
-				ObjectInputStream inin2=new ObjectInputStream(socket.getInputStream());
-				String powers = (String)(inin2.readObject());
-				System.out.println(powers);
-				String[] powerdiff = powers.split("\\s+");
-				for (int i = 0; i<powerdiff.length; i = i+2){
-					if (powerdiff[i].charAt(0)=='a'){
-						superball.vx = Double.parseDouble(powerdiff[i].substring(1));
-						superball.vy = Double.parseDouble(powerdiff[i+1]);
-						
-					} else if(powerdiff[i].charAt(0)=='b'){
-						superspeedball.vx = Double.parseDouble(powerdiff[i].substring(1));
-						superspeedball.vy = Double.parseDouble(powerdiff[i+1]);
-					}else if(powerdiff[i].charAt(0)=='c'){
-						extralifeball.vx = Double.parseDouble(powerdiff[i].substring(1));
-						extralifeball.vy = Double.parseDouble(powerdiff[i+1]);
-					}else if(powerdiff[i].charAt(0)=='d'){
-						stonewallball.vx = Double.parseDouble(powerdiff[i].substring(1));
-						stonewallball.vy = Double.parseDouble(powerdiff[i+1]);
+		
+		if(abc==true){
+		
+			try {
+				socket = new Socket("192.168.56.1", 9876);
+				ObjectInputStream inin=new ObjectInputStream(socket.getInputStream());
+				String message =  (String) inin.readObject();
+				String[] info = message.split("\\s+");
+	//			System.out.println("hello22");
+				System.out.println(message);
+	//			
+				bats.get(2).setLocation(bats.get(2).x, Integer.parseInt(info[1]));
+				bats.get(2).velo = Integer.parseInt(info[2]);
+				if (info.length>3){
+					for (int f = 0; f<balls.size(); f++){
+						Ball bal = balls.get(f);
+						bal.setLocation(Integer.parseInt(info[3+f*4]), Integer.parseInt(info[4+f*4]));
+						bal.vx = Double.parseDouble(info[5+f*4]);
+						bal.vy = Double.parseDouble(info[6+f*4]);
 					}
+					time = Integer.parseInt(info[info.length-1].substring(4));
+					System.out.println(time);
 				}
-				inin2.close();
+				
+				
+				
+				ObjectOutputStream out=new ObjectOutputStream(socket.getOutputStream());
+				String outinfo = bats.get(0).x+" "+bats.get(0).y+" "+bats.get(0).velo;
+				
+				out.writeObject(outinfo);
+				inin.close();
+				out.close();
+				if (time%5000==0&&time>=10000){
+					socket = new Socket("192.168.56.1" ,9876);
+					ObjectInputStream inin2=new ObjectInputStream(socket.getInputStream());
+					String powers = (String)(inin2.readObject());
+					System.out.println(powers);
+					String[] powerdiff = powers.split("\\s+");
+					for (int i = 0; i<powerdiff.length; i = i+2){
+						if (powerdiff[i].charAt(0)=='a'){
+							superball.vx = Double.parseDouble(powerdiff[i].substring(1));
+							superball.vy = Double.parseDouble(powerdiff[i+1]);
+							
+						} else if(powerdiff[i].charAt(0)=='b'){
+							superspeedball.vx = Double.parseDouble(powerdiff[i].substring(1));
+							superspeedball.vy = Double.parseDouble(powerdiff[i+1]);
+						}else if(powerdiff[i].charAt(0)=='c'){
+							extralifeball.vx = Double.parseDouble(powerdiff[i].substring(1));
+							extralifeball.vy = Double.parseDouble(powerdiff[i+1]);
+						}else if(powerdiff[i].charAt(0)=='d'){
+							stonewallball.vx = Double.parseDouble(powerdiff[i].substring(1));
+							stonewallball.vy = Double.parseDouble(powerdiff[i+1]);
+						}
+					}
+					inin2.close();
+				}
+//				Thread.sleep(1000);
+	//			
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				abc=false;
+				e.printStackTrace();
+				bats.get(2).toAI();
 			}
-			Thread.sleep(1);
-//			
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} else{
+			bats.get(2).toAI();
 		}
+		
 		repaint();
 	}
 

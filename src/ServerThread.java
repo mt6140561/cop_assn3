@@ -1,3 +1,4 @@
+
 import java.io.*;
 import java.net.*;
 
@@ -5,12 +6,14 @@ public class ServerThread extends Thread {
 	 protected Socket socket;
 	 public String messagein;
 	 public String messageout;
-	 public boolean f=false;
+	 public boolean f=false,completed=false;
+	 
 	    public ServerThread(Socket clientSocket) {
 	        this.socket = clientSocket;
 	    }
 	    
 	    public void run() {
+	    	completed=false;
 	        InputStream inp = null;
 	        DataInputStream brinp = null;
 	        DataOutputStream out = null;
@@ -40,8 +43,10 @@ public class ServerThread extends Thread {
 					//e.printStackTrace();
 				//}
 		        try {
+		        	System.out.print(messageout);
 					out.writeUTF(messageout);
-				} 
+				
+		        } 
 		        catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -70,7 +75,11 @@ public class ServerThread extends Thread {
 	            catch(IOException ie){
 	                System.out.println("Socket Close Error");
 	            }
+	            completed=true;
 	            }
 	        
 	        
 	    }
+	    
+
+
