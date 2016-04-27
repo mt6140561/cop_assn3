@@ -23,7 +23,7 @@ public class Bat extends JPanel{
 	public HashMap<String, Bat> pressedKeys;
 	public ArrayList<Ball> balls;
 	public ArrayList<Bat> bats;
-	public boolean Stonewall = true;
+	public boolean Stonewall = false;
 	public Bat (int x, int y, int length, int counter, int pos) {
 		this.x = x;
 		this.y = y;

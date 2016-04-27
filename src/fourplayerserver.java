@@ -24,7 +24,7 @@ import javax.swing.Timer;
 
 
 
-public class Contains extends JPanel implements ActionListener{
+public class fourplayerserver extends JPanel implements ActionListener{
 	
 	public HashMap<String, Bat> pressedKeys;
 	public ArrayList<Ball> balls;
@@ -39,29 +39,34 @@ public class Contains extends JPanel implements ActionListener{
 	/**
 	 * Create the panel.
 	 */
-	public Contains(int i) {
+	public fourplayerserver(int i,int k) {
 		pressedKeys = new HashMap<>();
 		bats = new ArrayList<>();
 		balls = new ArrayList<>();
 		setSize(600, 600);
 		setLayout(null);
-		setBackground(Color.BLACK);
+		//setBackground(Color.BLACK);
 		players = i;
 //		Bat bat1 = new Bat(0, 0, 150, 3, 1);
 //		Bat bat2 = new Bat(0, 0, 150, 3, 2);
 //		Bat bat3 = new Bat(getWidth()-10, 0, 150, 3, 3);
 //		Bat bat4 = new Bat(0, getHeight()-10, 150, 3, 4);
-		addBalls(1);
+		if(k>=3){
+			k=3;
+		}
+		addBalls(k);
+		
 //		add(bat1);
 //		add(bat2);
 //		add(bat3);
 //		add(bat4);
 		addBat(1);
+		
 		addBat(2);
 		addBat(3);
 		addBat(4);
-		
-		tm = new Timer (1, this);
+	
+		tm = new Timer (5, this);
 		tm.start();
 //		System.out.println((new Vector(1,7)).distance(new Vector(4,3)));
 	}
@@ -113,16 +118,16 @@ public class Contains extends JPanel implements ActionListener{
 			add(ball);
 		}
 	}
-	
+	static ServerSocket server1;
 	static SocketServerExample sse;
 	public static void main (String[] args) throws Exception {
-		String[] a={};
-	
-		server = new ServerSocket(9876);
 		
+	
+		srv = new Server();
+		 
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE );
-		frame.setContentPane(new Contains(4));
+		frame.setContentPane(new twoplayerserver(4,2));
 		frame.setLayout(null);
 		frame.pack();
 		frame.setSize(600+frame.getInsets().right+frame.getInsets().left+1, 600+frame.getInsets().top+frame.getInsets().bottom+1);
@@ -152,17 +157,20 @@ public class Contains extends JPanel implements ActionListener{
 			ball.setLocation((int)bx, (int)newby);
 			if (ball.vx<0){
 				bats.get(0).counter = bats.get(0).counter-1;
-//				System.out.println(bats.get(0).counter+" 0 ka");
+	//		System.out.println(bats.get(0).counter+" 0 ka");
 			} else {
 				bats.get(2).counter = bats.get(2).counter-1;
-//				System.out.println(bats.get(2).counter+" 2 ka");
+   //				System.out.println(bats.get(2).counter+" 2 ka");
 			}
 			ball.vx = -ball.vx;
 		}
+		
+		
+		
 	}
 	
 	public void abc(){
-		if(time%5000==0) {
+		if(time%15000==0) {
 			superpowers sball = new superpowers (300, 300);
 			sball.r=100;
 			sball.color=Color.green;
@@ -263,7 +271,7 @@ public class Contains extends JPanel implements ActionListener{
 	}
 	
 	public void Superspeed(){
-		if(time%21000==0){
+		if(time%20000==0){
 			superpowers ssball = new superpowers (300, 400);
 			ssball.r=100;
 			ssball.color=Color.DARK_GRAY;
@@ -288,19 +296,19 @@ public class Contains extends JPanel implements ActionListener{
 		int newbx = (int) (bx+superspeedball.vx);
 		int newby = (int) (by+superspeedball.vy);
 		superspeedball.setLocation(newbx, newby);
+//		
+//		if (bats.get(1).x<superspeedball.x+7.5&& bats.get(1).x+bats.get(1).length>superspeedball.x+7.5 && superspeedball.y<bats.get(1).y){
+//			bats.get(1).move=6;
+//            superspeedball.setVisible(false);
+//
+//		
+//		}
 		
-		if (bats.get(1).x<superspeedball.x+7.5&& bats.get(1).x+bats.get(1).length>superspeedball.x+7.5 && superspeedball.y<bats.get(1).y){
-			bats.get(1).move=6;
-            superspeedball.setVisible(false);
-
-		
-		}
-		
-		if (bats.get(3).x<superspeedball.x+7.5&& bats.get(3).x+bats.get(3).length>superspeedball.x+7.5 && superspeedball.y>bats.get(3).y){
-			bats.get(3).move=6;
-			superspeedball.setVisible(false);
-		}
-		
+//		if (bats.get(3).x<superspeedball.x+7.5&& bats.get(3).x+bats.get(3).length>superspeedball.x+7.5 && superspeedball.y>bats.get(3).y){
+//			bats.get(3).move=6;
+//			superspeedball.setVisible(false);
+//		}
+//		
 		if (bats.get(2).y<superspeedball.y+7.5&& bats.get(2).y+bats.get(2).length>superspeedball.y+7.5 && superspeedball.x>bats.get(2).x){
 			bats.get(2).move=6;
 			superspeedball.setVisible(false);
@@ -315,7 +323,7 @@ public class Contains extends JPanel implements ActionListener{
 	}
 	
 	public void extralife(){
-		if(time%8000==0){
+		if(time%10000==0){
 			superpowers ssball = new superpowers (300, 400);
 			ssball.r=100;
 			ssball.color=Color.pink;
@@ -340,25 +348,25 @@ public class Contains extends JPanel implements ActionListener{
 		int newbx = (int) (bx+extralifeball.vx);
 		int newby = (int) (by+extralifeball.vy);
 				extralifeball.setLocation(newbx, newby);
-		
-		if (bats.get(1).x<extralifeball.x+7.5&& bats.get(1).x+bats.get(1).length>extralifeball.x+7.5 && extralifeball.y<bats.get(1).y){
-			
-			if(extralifeball.taken==false){
-				extralifeball.taken=true;
-				bats.get(1).counter=bats.get(1).counter+1;
-			}
-            extralifeball.setVisible(false);
-
-		
-		}
-		
-		if (bats.get(3).x<extralifeball.x+7.5&& bats.get(3).x+bats.get(3).length>extralifeball.x+7.5 && extralifeball.y>bats.get(3).y){
-			if(extralifeball.taken==false){
-				extralifeball.taken=true;
-				bats.get(3).counter=bats.get(3).counter+1;
-			}
-			extralifeball.setVisible(false);
-		}
+//		
+//		if (bats.get(1).x<extralifeball.x+7.5&& bats.get(1).x+bats.get(1).length>extralifeball.x+7.5 && extralifeball.y<bats.get(1).y){
+//			
+//			if(extralifeball.taken==false){
+//				extralifeball.taken=true;
+//				bats.get(1).counter=bats.get(1).counter+1;
+//			}
+//            extralifeball.setVisible(false);
+//
+//		
+//		}
+//		
+//		if (bats.get(3).x<extralifeball.x+7.5&& bats.get(3).x+bats.get(3).length>extralifeball.x+7.5 && extralifeball.y>bats.get(3).y){
+//			if(extralifeball.taken==false){
+//				extralifeball.taken=true;
+//				bats.get(3).counter=bats.get(3).counter+1;
+//			}
+//			extralifeball.setVisible(false);
+//		}
 		
 		if (bats.get(2).y<extralifeball.y+7.5&& bats.get(2).y+bats.get(2).length>extralifeball.y+7.5 && extralifeball.x>bats.get(2).x){
 			
@@ -381,7 +389,7 @@ public class Contains extends JPanel implements ActionListener{
 	}
 	
 	public void Stonewall(){
-		if(time%31000==0){
+		if(time%30000==0){
 			superpowers ssball = new superpowers (300, 400);
 			ssball.r=100;
 			ssball.color=Color.YELLOW;
@@ -404,19 +412,19 @@ public class Contains extends JPanel implements ActionListener{
 		int newbx = (int) (bx+stonewallball.vx);
 		int newby = (int) (by+stonewallball.vy);
 				stonewallball.setLocation(newbx, newby);
-		
-		if (bats.get(1).x<stonewallball.x+7.5&& bats.get(1).x+bats.get(1).length>stonewallball.x+7.5 && stonewallball.y<bats.get(1).y){
-			bats.get(1).Stonewall=true;
-            stonewallball.setVisible(false);
-
-		
-		}
-		
-		if (bats.get(3).x<stonewallball.x+7.5&& bats.get(3).x+bats.get(3).length>stonewallball.x+7.5 && stonewallball.y>bats.get(3).y){
-			bats.get(3).Stonewall=true;
-			stonewallball.setVisible(false);
-		}
-		
+//		
+//		if (bats.get(1).x<stonewallball.x+7.5&& bats.get(1).x+bats.get(1).length>stonewallball.x+7.5 && stonewallball.y<bats.get(1).y){
+//			bats.get(1).Stonewall=true;
+//            stonewallball.setVisible(false);
+//
+//		
+//		}
+//		
+//		if (bats.get(3).x<stonewallball.x+7.5&& bats.get(3).x+bats.get(3).length>stonewallball.x+7.5 && stonewallball.y>bats.get(3).y){
+//			bats.get(3).Stonewall=true;
+//			stonewallball.setVisible(false);
+//		}
+//		
 		if (bats.get(2).y<stonewallball.y+7.5&& bats.get(2).y+bats.get(2).length>stonewallball.y+7.5 && stonewallball.x>bats.get(2).x){
 			bats.get(2).Stonewall=true;
 			stonewallball.setVisible(false);
@@ -437,11 +445,11 @@ public class Contains extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent arg0) {
 	
 		
-		time = time + 10;
+		time = time + 5;
 		repaint();
-	//	abc();
-		//Superspeed();
-		//extralife();
+		abc();
+		Superspeed();
+		extralife();
 		Stonewall();
 		Color c= Color.CYAN;
 		if(bats.get(0).Stonewall==true){
@@ -450,19 +458,19 @@ public class Contains extends JPanel implements ActionListener{
 			this.getGraphics().setColor(c);
 			this.getGraphics().drawRect(0, 0, 2, 600);	
 		}
-		if(bats.get(3).Stonewall==true){
-			this.getGraphics().setColor(c);
-			this.getGraphics().fillRect(0, 598, 600, 2);
-			this.getGraphics().setColor(c);
-			this.getGraphics().drawRect(0, 598, 600, 2);
-		}
-		if(bats.get(1).Stonewall==true){
-			this.getGraphics().setColor(c);
-			this.getGraphics().fillRect(0, 0, 600, 2);
-			this.getGraphics().setColor(c);
-			this.getGraphics().drawRect(0, 0, 600, 2);
-		}
-		if(bats.get(2).Stonewall==true){
+//		if(bats.get(3).Stonewall==true){
+//			this.getGraphics().setColor(c);
+//			this.getGraphics().fillRect(0, 598, 600, 2);
+//			this.getGraphics().setColor(c);
+//			this.getGraphics().drawRect(0, 598, 600, 2);
+//		}
+//		if(bats.get(1).Stonewall==true){
+//			this.getGraphics().setColor(c);
+//			this.getGraphics().fillRect(0, 0, 600, 2);
+//			this.getGraphics().setColor(c);
+//			this.getGraphics().drawRect(0, 0, 600, 2);
+//		}
+       if(bats.get(2).Stonewall==true){
 			this.getGraphics().setColor(c);;
 			this.getGraphics().fillRect(598, 0, 2, 600);
 			this.getGraphics().setColor(c);
@@ -509,9 +517,9 @@ public class Contains extends JPanel implements ActionListener{
 						bats.get(3).move = 8;
 //						System.out.println(bats.get(3).counter+" 3 ka");
 					}
-					System.out.println(ball.vy+", "+k);
+				//	System.out.println(ball.vy+", "+k);
 					ball.vy = -ball.vy;
-					System.out.println(ball.vy+", "+k);
+					//System.out.println(ball.vy+", "+k);
 				}
 			} else {
 				ball.setLocation((int)bx, (int)newby);
@@ -594,7 +602,53 @@ public class Contains extends JPanel implements ActionListener{
 		}
 		ballColl();
 		
+		bats.get(1).setVisible(false);
+		bats.get(3).setVisible(false);
+		socketfn();
+		
 	}
+	
+	
+	
+	Socket socket2;
+	
+	boolean abc= true;
+	public void socketfn(){
+
+	
+		
+		String s=" ";
+		
+	
+		if(time%10000==0||time<1000){
+		for(int i=0;i<balls.size();i++){
+			
+			Ball ball=balls.get(i);
+		s=s+ball.x+" "+ball.y+" "+ ball.vx+" "+ball.vy+" ";	
+		}
+		s= s+" "+"time"+time;
+		
+		}
+		
+		
+		if(abc==true){
+				try{
+					srv.
+	        	 }
+		
+		catch(Exception e){
+			abc=false;
+			e.printStackTrace();
+		}	}
+		
+		else{
+			bats.get(0).toAI();
+		}
+	}
+	
+	
+	static Server srv;
+	
 	 static ServerSocket server;
 	    //socket server port on which it will listen
 	static  Socket socket;
@@ -609,9 +663,9 @@ public class Contains extends JPanel implements ActionListener{
 		int fontSize = 20;
 		g.setFont(new Font("", Font.PLAIN, fontSize));
 	    g.setColor(Color.red);
-	    g.drawString("lives left  = " + bats.get(1).counter, 250, 30);
+	  //  g.drawString("lives left  = " + bats.get(1).counter, 250, 30);
 	    g.drawString("lives left  = " + bats.get(0).counter, 30, 300);
-	    g.drawString("lives left  = " + bats.get(3).counter, 250, 570);
+	   // g.drawString("lives left  = " + bats.get(3).counter, 250, 570);
 	    g.drawString("lives left  = " + bats.get(2).counter, 470,300);
 	    
 	}
@@ -663,6 +717,8 @@ public class Contains extends JPanel implements ActionListener{
 			}
 		}
 	}
+	
+	
 }
 
 
