@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
+<jardesc>
+    <jar path="C:/Users/Sanchi/Desktop/ping.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/Test2/ping1.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" mainClassHandleIdentifier="=Test2/src&lt;{firstframe.java[firstframe" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="true" exportOutputFolder="false">
+        <javaElement handleIdentifier="=Test2/src&lt;{Contains3.java"/>
+        <javaElement handleIdentifier="=Test2/src&lt;{instructions.java"/>
+        <javaElement handleIdentifier="=Test2/src&lt;{onclickingsinglemachine.java"/>
+        <javaElement handleIdentifier="=Test2/src&lt;{twoplayerserver.java"/>
+        <javaElement handleIdentifier="=Test2/src&lt;{twoplayermulti.java"/>
+        <javaElement handleIdentifier="=Test2/src&lt;{Ball.java"/>
+        <javaElement handleIdentifier="=Test2/src&lt;{Contains4.java"/>
+        <javaElement handleIdentifier="=Test2/src&lt;{serverexe.java"/>
+        <javaElement handleIdentifier="=Test2/src&lt;{playondifferentmachines.java"/>
+        <javaElement handleIdentifier="=Test2/src&lt;{moveAction.java"/>
+        <javaElement handleIdentifier="=Test2/src&lt;{Contains2.java"/>
+        <javaElement handleIdentifier="=Test2/src&lt;{Vector.java"/>
+        <javaElement handleIdentifier="=Test2/src&lt;{twoplayerclient.java"/>
+        <javaElement handleIdentifier="=Test2/src&lt;{firstframe.java"/>
+        <javaElement handleIdentifier="=Test2/src&lt;{superpowers.java"/>
+        <javaElement handleIdentifier="=Test2/src&lt;{Bat.java"/>
+        <javaElement handleIdentifier="=Test2/src&lt;{Contains.java"/>
+    </selectedElements>
+</jardesc>

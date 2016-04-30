@@ -7,17 +7,25 @@ import javax.swing.JLabel;
 
 
 public class Ball extends JLabel {
-	public int x;
-	public int y;
-	public double vx;
-	public double vy;
-	public Vector centre;
-	public double r = 7.5;
-	public boolean taken = false;
-	public Color color = Color.RED;
+	public int x;//x coordinate
+	public int y;//y coordinate
+	public double vx;// horizontal collision
+	public double vy;// vertical velocity
+	int k=20;//random constant
+	public Vector centre;//centre vector point
+	public double r = 7.5;//radius
+	public boolean taken = false;//junk
+	public Color color = Color.RED;//colour
+	
+	/*
+	 * randomselect(): 	selects random velocity between -k to k.
+	 * Ball(x,y): 		sets coordinates of balls
+	 * setLocation():	sets location and changes respective fields.
+	 * paintComponent():draws the ball
+	 */
 	
 	public int randomselect(){
-		int vxx = (int)(Math.random()*30-Math.random()*30);
+		int vxx = (int)(Math.random()*k-Math.random()*k);
 		if(vxx==0){
 			vxx=randomselect();
 		}

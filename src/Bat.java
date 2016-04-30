@@ -20,18 +20,28 @@ public class Bat extends JPanel{
 	public int velo;
 	public int move;
 
-	public HashMap<String, Bat> pressedKeys;
-	public ArrayList<Ball> balls;
+	public HashMap<String, Bat> pressedKeys;//keys pressed in the container
+	public ArrayList<Ball> balls;//balls in the game
 
-	public boolean Stonewall = false;
+	public boolean Stonewall = false;//whether it has stonewall
+	
+	/*
+	 * Bat(x, y, l, c, p): 	creates at x, y with l length, c lives and p position on screen
+	 * ballBat():			defines physics of collision of bat with ball
+	 * addAction2():		Adds action to the bat
+	 * changeLength():		Changes length of bat
+	 * nearestball():		gives ball which will take least time to reach bats wall
+	 * findx():				projected point where the ball will strike the wall
+	 * toAI():				adds AI to bat
+	 */
 	public Bat (int x, int y, int length, int counter, int pos) {
-		this.x = x;
-		this.y = y;
-		this.length = length;
-		this.counter = counter;
-		this.pos = pos;
-		this.velo = 0;
-		this.move = 8;
+		this.x = x;//x coordinate
+		this.y = y;//y coordinate
+		this.length = length;//length of bat
+		this.counter = 10;//life
+		this.pos = pos;//positon in container
+		this.velo = 0;//velocity
+		this.move = 8;//movement speed
 		this.setLocation(x, y);
 		int x1=-1,y1=-1;
 		if (pos == 1 || pos == 3) {
@@ -436,7 +446,7 @@ return x;
 	}
 	
 	public void toAI(){
-		
+		this.move=4;
 		if(pos==4){
 			int a =findx() ;
 			int dis = a - x - ((length)/2 );

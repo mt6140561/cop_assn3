@@ -19,8 +19,8 @@ public class superpowers extends JLabel {
 		this.x = x;
 		
 		this.y = y;
-		vx = (int)(Math.random()*4)-2;
-		vy = (int)(Math.random()*4)-2;
+		vx = (int)(Math.random()*8)-4;
+		vy = (int)(Math.random()*8)-4;
 		if (vx==0){vx = 2;}
 		if (vy==0){vy = 2;}
 		centre = new Vector(x+r, y+r);

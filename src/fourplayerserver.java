@@ -31,6 +31,8 @@ public class fourplayerserver extends JPanel implements ActionListener{
 	public ArrayList<Bat> bats;
 	Timer tm;
 	public int players;
+
+	static public ChatServer server;
 	public superpowers superball;
 	public superpowers superspeedball;
 	public int time = 10;
@@ -39,7 +41,7 @@ public class fourplayerserver extends JPanel implements ActionListener{
 	/**
 	 * Create the panel.
 	 */
-	public fourplayerserver(int i,int k) {
+	public fourplayerserver(int i,int k)throws Exception {
 		pressedKeys = new HashMap<>();
 		bats = new ArrayList<>();
 		balls = new ArrayList<>();
@@ -65,8 +67,16 @@ public class fourplayerserver extends JPanel implements ActionListener{
 		addBat(2);
 		addBat(3);
 		addBat(4);
-	
-		tm = new Timer (5, this);
+		server = new ChatServer(22);
+		server.client= new ChatClient("localhost",22,bats.get(3),4,balls);
+		server.client.balls=balls;
+		server.client.tim.start();
+//		server.client.socket2= new Socket("192.168.137.1",33);
+//		
+//		server.client.socket
+		
+		
+		tm = new Timer (10, this);
 		tm.start();
 //		System.out.println((new Vector(1,7)).distance(new Vector(4,3)));
 	}
@@ -125,13 +135,12 @@ public class fourplayerserver extends JPanel implements ActionListener{
 	static SocketServerExample sse;
 	public static void main (String[] args) throws Exception {
 		
+		server = null;
+		
 	
-		server1 = new ServerSocket(111);
-		server2 = new ServerSocket(222);
-		server3=new ServerSocket(333);
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE );
-		frame.setContentPane(new fourplayerserver(4,2));
+		frame.setContentPane(new fourplayerserver(4,1));
 		frame.setLayout(null);
 		frame.pack();
 		frame.setSize(600+frame.getInsets().right+frame.getInsets().left+1, 600+frame.getInsets().top+frame.getInsets().bottom+1);
@@ -300,19 +309,19 @@ public class fourplayerserver extends JPanel implements ActionListener{
 		int newbx = (int) (bx+superspeedball.vx);
 		int newby = (int) (by+superspeedball.vy);
 		superspeedball.setLocation(newbx, newby);
-//		
-//		if (bats.get(1).x<superspeedball.x+7.5&& bats.get(1).x+bats.get(1).length>superspeedball.x+7.5 && superspeedball.y<bats.get(1).y){
-//			bats.get(1).move=6;
-//            superspeedball.setVisible(false);
-//
-//		
-//		}
 		
-//		if (bats.get(3).x<superspeedball.x+7.5&& bats.get(3).x+bats.get(3).length>superspeedball.x+7.5 && superspeedball.y>bats.get(3).y){
-//			bats.get(3).move=6;
-//			superspeedball.setVisible(false);
-//		}
-//		
+		if (bats.get(1).x<superspeedball.x+7.5&& bats.get(1).x+bats.get(1).length>superspeedball.x+7.5 && superspeedball.y<bats.get(1).y){
+			bats.get(1).move=6;
+            superspeedball.setVisible(false);
+
+		
+		}
+		
+		if (bats.get(3).x<superspeedball.x+7.5&& bats.get(3).x+bats.get(3).length>superspeedball.x+7.5 && superspeedball.y>bats.get(3).y){
+			bats.get(3).move=6;
+			superspeedball.setVisible(false);
+		}
+		
 		if (bats.get(2).y<superspeedball.y+7.5&& bats.get(2).y+bats.get(2).length>superspeedball.y+7.5 && superspeedball.x>bats.get(2).x){
 			bats.get(2).move=6;
 			superspeedball.setVisible(false);
@@ -352,25 +361,25 @@ public class fourplayerserver extends JPanel implements ActionListener{
 		int newbx = (int) (bx+extralifeball.vx);
 		int newby = (int) (by+extralifeball.vy);
 				extralifeball.setLocation(newbx, newby);
-//		
-//		if (bats.get(1).x<extralifeball.x+7.5&& bats.get(1).x+bats.get(1).length>extralifeball.x+7.5 && extralifeball.y<bats.get(1).y){
-//			
-//			if(extralifeball.taken==false){
-//				extralifeball.taken=true;
-//				bats.get(1).counter=bats.get(1).counter+1;
-//			}
-//            extralifeball.setVisible(false);
-//
-//		
-//		}
-//		
-//		if (bats.get(3).x<extralifeball.x+7.5&& bats.get(3).x+bats.get(3).length>extralifeball.x+7.5 && extralifeball.y>bats.get(3).y){
-//			if(extralifeball.taken==false){
-//				extralifeball.taken=true;
-//				bats.get(3).counter=bats.get(3).counter+1;
-//			}
-//			extralifeball.setVisible(false);
-//		}
+		
+		if (bats.get(1).x<extralifeball.x+7.5&& bats.get(1).x+bats.get(1).length>extralifeball.x+7.5 && extralifeball.y<bats.get(1).y){
+			
+			if(extralifeball.taken==false){
+				extralifeball.taken=true;
+				bats.get(1).counter=bats.get(1).counter+1;
+			}
+            extralifeball.setVisible(false);
+
+		
+		}
+		
+		if (bats.get(3).x<extralifeball.x+7.5&& bats.get(3).x+bats.get(3).length>extralifeball.x+7.5 && extralifeball.y>bats.get(3).y){
+			if(extralifeball.taken==false){
+				extralifeball.taken=true;
+				bats.get(3).counter=bats.get(3).counter+1;
+			}
+			extralifeball.setVisible(false);
+		}
 		
 		if (bats.get(2).y<extralifeball.y+7.5&& bats.get(2).y+bats.get(2).length>extralifeball.y+7.5 && extralifeball.x>bats.get(2).x){
 			
@@ -416,19 +425,19 @@ public class fourplayerserver extends JPanel implements ActionListener{
 		int newbx = (int) (bx+stonewallball.vx);
 		int newby = (int) (by+stonewallball.vy);
 				stonewallball.setLocation(newbx, newby);
-//		
-//		if (bats.get(1).x<stonewallball.x+7.5&& bats.get(1).x+bats.get(1).length>stonewallball.x+7.5 && stonewallball.y<bats.get(1).y){
-//			bats.get(1).Stonewall=true;
-//            stonewallball.setVisible(false);
-//
-//		
-//		}
-//		
-//		if (bats.get(3).x<stonewallball.x+7.5&& bats.get(3).x+bats.get(3).length>stonewallball.x+7.5 && stonewallball.y>bats.get(3).y){
-//			bats.get(3).Stonewall=true;
-//			stonewallball.setVisible(false);
-//		}
-//		
+		
+		if (bats.get(1).x<stonewallball.x+7.5&& bats.get(1).x+bats.get(1).length>stonewallball.x+7.5 && stonewallball.y<bats.get(1).y){
+			bats.get(1).Stonewall=true;
+            stonewallball.setVisible(false);
+
+		
+		}
+		
+		if (bats.get(3).x<stonewallball.x+7.5&& bats.get(3).x+bats.get(3).length>stonewallball.x+7.5 && stonewallball.y>bats.get(3).y){
+			bats.get(3).Stonewall=true;
+			stonewallball.setVisible(false);
+		}
+		
 		if (bats.get(2).y<stonewallball.y+7.5&& bats.get(2).y+bats.get(2).length>stonewallball.y+7.5 && stonewallball.x>bats.get(2).x){
 			bats.get(2).Stonewall=true;
 			stonewallball.setVisible(false);
@@ -462,18 +471,18 @@ public class fourplayerserver extends JPanel implements ActionListener{
 			this.getGraphics().setColor(c);
 			this.getGraphics().drawRect(0, 0, 2, 600);	
 		}
-//		if(bats.get(3).Stonewall==true){
-//			this.getGraphics().setColor(c);
-//			this.getGraphics().fillRect(0, 598, 600, 2);
-//			this.getGraphics().setColor(c);
-//			this.getGraphics().drawRect(0, 598, 600, 2);
-//		}
-//		if(bats.get(1).Stonewall==true){
-//			this.getGraphics().setColor(c);
-//			this.getGraphics().fillRect(0, 0, 600, 2);
-//			this.getGraphics().setColor(c);
-//			this.getGraphics().drawRect(0, 0, 600, 2);
-//		}
+		if(bats.get(3).Stonewall==true){
+			this.getGraphics().setColor(c);
+			this.getGraphics().fillRect(0, 598, 600, 2);
+			this.getGraphics().setColor(c);
+			this.getGraphics().drawRect(0, 598, 600, 2);
+		}
+		if(bats.get(1).Stonewall==true){
+			this.getGraphics().setColor(c);
+			this.getGraphics().fillRect(0, 0, 600, 2);
+			this.getGraphics().setColor(c);
+			this.getGraphics().drawRect(0, 0, 600, 2);
+		}
        if(bats.get(2).Stonewall==true){
 			this.getGraphics().setColor(c);;
 			this.getGraphics().fillRect(598, 0, 2, 600);
@@ -606,8 +615,8 @@ public class fourplayerserver extends JPanel implements ActionListener{
 		}
 		ballColl();
 		
-		bats.get(1).setVisible(false);
-		bats.get(3).setVisible(false);
+	//	bats.get(1).setVisible(false);
+		//bats.get(3).setVisible(false);
 		socketfn();
 		
 	}
@@ -638,63 +647,33 @@ public class fourplayerserver extends JPanel implements ActionListener{
 		
 		if(abc==true){
 				try{
-			//System.out.println("asdasd");
-	    	socket=server1.accept();
-
-            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-        	String mess = (String) ois.readObject();
-        //	System.out.print("assa");
-        	
-        	String[] abcd = mess.split("\\s+");
-        	bats.get(0).setLocation(Integer.parseInt(abcd[0]), Integer.parseInt(abcd[1]));
-        	bats.get(0).velo=Integer.parseInt(abcd[2]);
-        	 
-	            ois.close();
-	          
-        	 socket.close();
-// 	    	socket=server2.accept();
-//
-//             ois = new ObjectInputStream(socket.getInputStream());
-//        	 mess = (String) ois.readObject();
-//        //	System.out.print("assa");
-//        	
-//        	 abcd = mess.split("\\s+");
-//        	bats.get(1).setLocation(Integer.parseInt(abcd[0]), Integer.parseInt(abcd[1]));
-//        	bats.get(1).velo=Integer.parseInt(abcd[2]);
-//        	 
-//	            ois.close();
-//	          
-//        	 socket.close();
-////
-//  	    	socket=server3.accept();
-//
-//            ois = new ObjectInputStream(socket.getInputStream());
-//       	 mess = (String) ois.readObject();
-//       //	System.out.print("assa");
-//       	
-//       	 abcd = mess.split("\\s+");
-//       	bats.get(1).setLocation(Integer.parseInt(abcd[0]), Integer.parseInt(abcd[1]));
-//       	bats.get(1).velo=Integer.parseInt(abcd[2]);
-//       	 
-//	            ois.close();
-//	          
-//       	 socket.close();
-//        	 
-        	 
-        	 
-	        	 }
+//	if(server.s1.equals(null))
+				String[] info = server.client.s1.split("\\s+");
+					System.out.println("abc"+server.s4);
+							bats.get(0).setLocation(bats.get(0).x, Integer.parseInt(info[2]));
+	//	balls.get(0).setLocation(Integer.parseInt(info[4]),Integer.parseInt(info[5]));
+		
+		server.s4=(""+"4"+" "+bats.get(3).x+" "+bats.get(3).y+" "+bats.get(3).velo+" "+balls.get(0).x+" "+balls.get(0).y);
+		
+		
+		
+		
+		
+			}
+						
+				
 			
 		
 		
-		
+	
 		
 		
 		
 		
 		catch(Exception e){
-			abc=false;
-			e.printStackTrace();
-			bats.get(0).toAI();
+			//abc=false;
+		//	e.printStackTrace();
+		//	bats.get(0).toAI();
 		}	}
 		
 		else{
@@ -723,9 +702,9 @@ public class fourplayerserver extends JPanel implements ActionListener{
 		int fontSize = 20;
 		g.setFont(new Font("", Font.PLAIN, fontSize));
 	    g.setColor(Color.red);
-	  //  g.drawString("lives left  = " + bats.get(1).counter, 250, 30);
+	    g.drawString("lives left  = " + bats.get(1).counter, 250, 30);
 	    g.drawString("lives left  = " + bats.get(0).counter, 30, 300);
-	   // g.drawString("lives left  = " + bats.get(3).counter, 250, 570);
+	    g.drawString("lives left  = " + bats.get(3).counter, 250, 570);
 	    g.drawString("lives left  = " + bats.get(2).counter, 470,300);
 	    
 	}

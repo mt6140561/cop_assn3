@@ -25,18 +25,28 @@ import javax.swing.Timer;
 
 public class Contains extends JPanel implements ActionListener{
 	
-	public HashMap<String, Bat> pressedKeys;
-	public ArrayList<Ball> balls;
-	public ArrayList<Bat> bats;
-	Timer tm;
-	public int players;
-	public superpowers superball;
-	public superpowers superspeedball;
-	public int time = 10;
-	public superpowers extralifeball;
-	public superpowers stonewallball;
+	public HashMap<String, Bat> pressedKeys;//keys pressed by the bat
+	public ArrayList<Ball> balls;			//no of balls
+	public ArrayList<Bat> bats;				//no of bats
+	Timer tm;								//timer of action performed
+	public int players;						//junk
+	public superpowers superball;			//powerball long bat
+	public superpowers superspeedball;		//powerball slow speed
+	public int time = 10;					//time value
+	public superpowers extralifeball;		//powerball extra life
+	public superpowers stonewallball;		//powerball stone wall
 	/**
 	 * Create the panel.
+	 * Contains(int i, int k): i is junk value, k is no of balls
+	 * add(bat): adds bat to the pane
+	 * add(ball): adds ball to the pane
+	 * addBalls(int i): add i no. of balls
+	 * ballWall(ball): collision of ball with wall
+	 * abc(): physics and properties of long bat balls
+	 * superspeed(): physics and properties of slowspeed balls
+	 * stonewall(): physics and properties of stonewall balls
+	 * extralife(): physics and properties of extralife balls
+	 * ballColl(): inter ball collisions
 	 */
 	public Contains(int i,int k) {
 		this.number=k;
@@ -482,25 +492,7 @@ public class Contains extends JPanel implements ActionListener{
 		return a;
 	}
 	
-	public void decipher(String sa[][]){
-		for(int i=0;i<sa.length;i++){
-			if(sa[i][0].equals("ballposition")){
-				balls.get(0).x=Integer.parseInt(sa[i][1]);
-				balls.get(0).y=Integer.parseInt(sa[i][2]);
-			}
-			if(sa[i][0].equals("batposition")){
-				bats.get(2).x=Integer.parseInt(sa[i][1]);
-				bats.get(2).y=Integer.parseInt(sa[i][2]);
-			}
-			if(sa[i][0].equals("length")){
-				bats.get(2).length=Integer.parseInt(sa[i][1]);
-			}
-			if(sa[i][0].equals("life")){
-				bats.get(2).counter=Integer.parseInt(sa[i][1]);
-			}
-			
-		}
-	}
+	
 	
 	public void ballColl(){
 		for (int j = 0; j<balls.size(); j++){
@@ -543,8 +535,9 @@ public class Contains extends JPanel implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		
-		
+		bats.get(0).toAI();
+		bats.get(1).toAI();
+		bats.get(2).toAI();
 		
 		time = time + 10;
 		repaint();
@@ -552,6 +545,7 @@ public class Contains extends JPanel implements ActionListener{
 		Superspeed();
 		extralife();
 		Stonewall();
+		countercheck();
 		Color c= Color.CYAN;
 		if(bats.get(0).Stonewall==true){
 			this.getGraphics().setColor(c);;
@@ -633,7 +627,7 @@ public class Contains extends JPanel implements ActionListener{
 			}
 		}
 		ballColl();
-		
+	countercheck();	
 //		try {
 //			
 //			
@@ -654,5 +648,57 @@ public class Contains extends JPanel implements ActionListener{
 		
 	}
 
+	
+
+	public void countercheck(){
+	int c1=	bats.get(0).counter;
+	int c2=bats.get(1).counter;
+	int c3=	bats.get(2).counter;
+	int c4=	bats.get(3).counter;
+	
+	if(c1<=0){
+		
+		bats.get(0).setVisible(false);
+		bats.get(0).Stonewall=false;
+		bats.get(0).y=-400;
+		bats.get(0).counter=0;
+	}
+	
+	
+if(c3<=0){
+		
+		bats.get(2).setVisible(false);
+		bats.get(2).Stonewall=false;
+		bats.get(2).y=-400;
+		bats.get(2).counter=0;
+	}
+
+if(c2<=0){
+	
+	bats.get(1).setVisible(false);
+	bats.get(1).Stonewall=false;
+	bats.get(1).x=-400;
+	bats.get(1).counter=0;
+}
+	
+if(c4<=0){
+	
+	bats.get(3).setVisible(false);
+	bats.get(3).Stonewall=false;
+	bats.get(3).x=-400;
+	bats.get(3).counter=0;
 }
 
+
+	if(c1==0&&c2==0&&c3==0&&c4==0){
+		this.getGraphics().drawString("GAME OVER",280, 300);
+		for(int i=0;i<balls.size();i++){
+			balls.get(i).vx=0;
+			balls.get(i).vy=0;
+			tm.stop();
+	}
+
+		}
+}
+
+}

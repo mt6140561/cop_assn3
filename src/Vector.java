@@ -1,7 +1,12 @@
-
+/*
+ * Creates a tuple of doubles
+ * dotProd(v):	returns dot product with v
+ * distance(v):	distance between two point vectors
+ * mod():		absolute value of vector
+ */
 public class Vector {
-	public double x;
-	public double y;
+	public double x;//x coordinate
+	public double y;//y coordinate
 	
 	public Vector(double x, double y){
 		this.x = x;

@@ -1,4 +1,4 @@
- import java.awt.Color;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -22,7 +22,10 @@ import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
 
-
+/*
+ * Similar as contains except that this creats a client socket
+ * Given IP in the constructor is the ip of socket
+ */
 public class twoplayerclient extends JPanel implements ActionListener{
 	
 	public HashMap<String, Bat> pressedKeys;
@@ -32,13 +35,14 @@ public class twoplayerclient extends JPanel implements ActionListener{
 	public int players;
 	public superpowers superball;
 	public superpowers superspeedball;
-	public int time = 10;
+	public int time = 25;
 	public superpowers extralifeball;
 	public superpowers stonewallball;
+	static String IP="";
 	/**
 	 * Create the panel.
 	 */
-	public twoplayerclient(int i) {
+	public twoplayerclient(int i,int k,String IP) {
 		pressedKeys = new HashMap<>();
 		bats = new ArrayList<>();
 		balls = new ArrayList<>();
@@ -46,12 +50,17 @@ public class twoplayerclient extends JPanel implements ActionListener{
 		setLayout(null);
 //		setBackground(Color.BLACK);
 		players = i;
-		addBalls(2);
+		if(k>=3){
+			k=3;
+		}
+		this.IP=IP;
+		b=k;
+		addBalls(k);
 		addBat(1);
 		addBat(2);
 		addBat(3);
 		addBat(4);
-		tm = new Timer (5, this);
+		tm = new Timer (20, this);
 		tm.start();
 		bats.get(1).setVisible(false);
 		bats.get(3).setVisible(false);
@@ -59,6 +68,7 @@ public class twoplayerclient extends JPanel implements ActionListener{
 	
 	public void add(Bat bat){
 		bat.balls=balls;
+		bat.move=30;
 //		bat.bats=bats;
 		bat.pressedKeys=pressedKeys;
 		bat.addAction2(pressedKeys);
@@ -98,6 +108,7 @@ public class twoplayerclient extends JPanel implements ActionListener{
 		balls.add(ball);
 	}
 	
+	static int b =1;
 	public void addBalls(int i){
 		for (int j = 1; j<=i; j++){
 			Ball ball = new Ball(100*j, 100*j);
@@ -107,14 +118,15 @@ public class twoplayerclient extends JPanel implements ActionListener{
 	
 	public static Socket socket;
 	public static Socket socket2;
-	public static void main (String[] args) throws Exception{
+	public void run() throws Exception{
 		
 	     
 		JFrame frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE );
-		frame.setContentPane(new twoplayerclient(4));
+		frame.setContentPane(this);
 		frame.setLayout(null);
 		frame.pack();
+//		frame.setFocusable(true);
 		frame.setSize(600+frame.getInsets().right+frame.getInsets().left+1, 600+frame.getInsets().top+frame.getInsets().bottom+1);
 		frame.setVisible(true);
 		
@@ -138,7 +150,7 @@ public class twoplayerclient extends JPanel implements ActionListener{
 					}
 					bats.get(1).changeLength(150);
 					bats.get(1).Stonewall = false;
-					bats.get(1).move = 8;
+					bats.get(1).move = 18;
 //					System.out.println(bats.get(1).counter+" 1 ka");
 				} else {
 					if (bats.get(3).Stonewall == false){
@@ -147,7 +159,7 @@ public class twoplayerclient extends JPanel implements ActionListener{
 					
 					bats.get(3).changeLength(150);
 					bats.get(3).Stonewall = false;
-					bats.get(3).move = 8;
+					bats.get(3).move = 18;
 //					System.out.println(bats.get(3).counter+" 3 ka");
 				}
 //				System.out.println(ball.vy+", "+k);
@@ -163,7 +175,7 @@ public class twoplayerclient extends JPanel implements ActionListener{
 				}
 				bats.get(0).changeLength(150);
 				bats.get(0).Stonewall = false;
-				bats.get(0).move = 8;
+				bats.get(0).move = 18;
 
 //				System.out.println(bats.get(0).counter+" 0 ka");
 			} else {
@@ -172,7 +184,7 @@ public class twoplayerclient extends JPanel implements ActionListener{
 				}
 				bats.get(2).changeLength(150);
 				bats.get(2).Stonewall = false;
-				bats.get(2).move = 8;
+				bats.get(2).move = 18;
 
 //				System.out.println(bats.get(2).counter+" 2 ka");
 			}
@@ -542,13 +554,14 @@ public class twoplayerclient extends JPanel implements ActionListener{
 		
 		
 		
-		time = time + 5;
+		time = time + 25;
 		repaint();
 		abc();
 		Superspeed();
 		extralife();
 		Stonewall();
 		Color c= Color.CYAN;
+		countercheck();
 		if(bats.get(0).Stonewall==true){
 			this.getGraphics().setColor(c);;
 			this.getGraphics().fillRect(0, 0, 2, 600);
@@ -612,6 +625,7 @@ public class twoplayerclient extends JPanel implements ActionListener{
 			}
 		}
 		ballColl();
+		countercheck();
 		socketfn();
 	}
 	
@@ -622,7 +636,7 @@ public class twoplayerclient extends JPanel implements ActionListener{
 		if(abc==true){
 		
 			try {
-				socket = new Socket("192.168.56.1", 9876);
+				socket = new Socket(IP, 9876);
 				ObjectInputStream inin=new ObjectInputStream(socket.getInputStream());
 				String message =  (String) inin.readObject();
 				String[] info = message.split("\\s+");
@@ -650,28 +664,27 @@ public class twoplayerclient extends JPanel implements ActionListener{
 				out.writeObject(outinfo);
 				inin.close();
 				out.close();
-				if (time%5000==0&&time>=10000){
-					socket = new Socket("192.168.56.1" ,9876);
+				if (time%5000>0&&time>=10000&&time%5000<1000){
+					socket = new Socket(IP ,9876);
 					ObjectInputStream inin2=new ObjectInputStream(socket.getInputStream());
 					String powers = (String)(inin2.readObject());
 					System.out.println(powers);
 					String[] powerdiff = powers.split("\\s+");
-					for (int i = 0; i<powerdiff.length; i = i+2){
-						if (powerdiff[i].charAt(0)=='a'){
-							superball.vx = Double.parseDouble(powerdiff[i].substring(1));
-							superball.vy = Double.parseDouble(powerdiff[i+1]);
+					
+							superball.vx = Double.parseDouble(powerdiff[0]);
+							superball.vy = Double.parseDouble(powerdiff[1]);
 							
-						} else if(powerdiff[i].charAt(0)=='b'){
-							superspeedball.vx = Double.parseDouble(powerdiff[i].substring(1));
-							superspeedball.vy = Double.parseDouble(powerdiff[i+1]);
-						}else if(powerdiff[i].charAt(0)=='c'){
-							extralifeball.vx = Double.parseDouble(powerdiff[i].substring(1));
-							extralifeball.vy = Double.parseDouble(powerdiff[i+1]);
-						}else if(powerdiff[i].charAt(0)=='d'){
-							stonewallball.vx = Double.parseDouble(powerdiff[i].substring(1));
-							stonewallball.vy = Double.parseDouble(powerdiff[i+1]);
-						}
-					}
+						
+							superspeedball.vx = Double.parseDouble(powerdiff[2]);
+							superspeedball.vy = Double.parseDouble(powerdiff[3]);
+						
+							extralifeball.vx = Double.parseDouble(powerdiff[4]);
+							extralifeball.vy = Double.parseDouble(powerdiff[5]);
+						
+							stonewallball.vx = Double.parseDouble(powerdiff[6]);
+							stonewallball.vy = Double.parseDouble(powerdiff[7]);
+						
+					
 					inin2.close();
 				}
 //				Thread.sleep(1000);
@@ -691,6 +704,59 @@ public class twoplayerclient extends JPanel implements ActionListener{
 	}
 
 
+
+	public void countercheck(){
+	int c1=	bats.get(0).counter;
+	int c2=bats.get(1).counter;
+	int c3=	bats.get(2).counter;
+	int c4=	bats.get(3).counter;
+	
+	if(c1<=0){
+		
+		bats.get(0).setVisible(false);
+		bats.get(0).Stonewall=false;
+		bats.get(0).y=-400;
+		bats.get(0).counter=0;
+	}
+	
+	
+if(c3<=0){
+		
+		bats.get(2).setVisible(false);
+		bats.get(2).Stonewall=false;
+		bats.get(2).y=-400;
+		bats.get(2).counter=0;
+	}
+
+if(c2<=0){
+	
+	bats.get(1).setVisible(false);
+	bats.get(1).Stonewall=false;
+	bats.get(1).x=-400;
+	bats.get(1).counter=0;
+}
+	
+if(c4<=0){
+	
+	bats.get(3).setVisible(false);
+	bats.get(3).Stonewall=false;
+	bats.get(3).x=-400;
+	bats.get(3).counter=0;
+}
+
+if(c1==0||c3==0){
+	this.getGraphics().drawString("Victory",280, 300);
+	for(int i=0;i<balls.size();i++){
+		balls.get(i).vx=0;
+		balls.get(i).vy=0;
+		tm.stop();
+		
+	}
+	repaint();
+}
+	}
+	
+	
 }
 
 
